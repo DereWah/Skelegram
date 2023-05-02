@@ -30,7 +30,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             if (update.hasMessage()) {
                 Bukkit.getScheduler().callSyncMethod(Skelegram.getInstance(), (Callable) () -> {
-                    Bukkit.getPluginManager().callEvent(new BridgeTelegramUpdateMessage(update));
+                    Bukkit.getPluginManager().callEvent(new BridgeTelegramUpdateMessage(update, this));
                     return null;
                 });
             }

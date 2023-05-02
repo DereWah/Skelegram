@@ -5,7 +5,7 @@ import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
-public class ExprTelegramMessageChat extends SimplePropertyExpression<Message, Chat> {
+public class ExprTelegramMessageChat extends SimplePropertyExpression<Object, Chat> {
 
     static {
         register(ExprTelegramMessageChat.class, Chat.class, "chat", "telegrammessage");
@@ -18,7 +18,13 @@ public class ExprTelegramMessageChat extends SimplePropertyExpression<Message, C
     }
 
     @Override
-    public Chat convert(Message message) { return message.getChat(); }
+    public Chat convert(Object object) {
+        if (object instanceof Message){
+            return ((Message) object).getChat();
+        }else{
+            return null;
+        }
+    }
 
     @Override
     public Class<? extends Chat> getReturnType() {
