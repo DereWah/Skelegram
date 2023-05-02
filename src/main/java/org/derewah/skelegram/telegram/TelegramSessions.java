@@ -3,11 +3,25 @@ package org.derewah.skelegram.telegram;
 import org.telegram.telegrambots.meta.generics.BotSession;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TelegramSessions {
 
-    public static HashMap<String, BotSession> sessions = new HashMap<>(Map.of());
+
+    public HashMap<String, BotSession> sessions = new HashMap<>();
+
+
+    public void clearAllSessions(){
+        for(BotSession sess : sessions.values()){
+            sess.stop();
+        }
+        sessions.clear();
+    }
+
+    public void stopSession(String username){
+        if(sessions.containsKey(username)){
+            sessions.get(username).stop();
+            sessions.remove(username);
+        }
+    }
 
 }

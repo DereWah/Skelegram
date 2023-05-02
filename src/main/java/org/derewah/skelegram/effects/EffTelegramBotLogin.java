@@ -12,8 +12,8 @@ import ch.njol.util.Kleenean;
 
 import org.bukkit.event.Event;
 
+import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.telegram.TelegramBot;
-import org.derewah.skelegram.telegram.TelegramSessions;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.BotSession;
@@ -53,10 +53,7 @@ public class EffTelegramBotLogin extends Effect {
             try {
 
 
-                BotSession sess = TelegramSessions.sessions.get(username.getSingle(event));
-                if (sess != null){
-                    sess.stop();
-                }
+                Skelegram.getInstance().getTelegramSessions().stopSession(username.getSingle(event));
 
                 TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
                 TelegramBot bot = new TelegramBot();
@@ -64,9 +61,10 @@ public class EffTelegramBotLogin extends Effect {
                 bot.token = token.getSingle(event);
                 bot.username = username.getSingle(event);
 
-                sess = botsApi.registerBot(bot);
+                BotSession sess = botsApi.registerBot(bot);
 
-                TelegramSessions.sessions.put(username.getSingle(event), sess);
+                Skelegram.getInstance().getTelegramSessions().sessions.put(username.getSingle(event), sess);
+
 
             }catch (TelegramApiException e){
                 e.printStackTrace();

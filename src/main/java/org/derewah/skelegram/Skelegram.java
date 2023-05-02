@@ -1,5 +1,6 @@
 package org.derewah.skelegram;
 
+import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
@@ -7,17 +8,16 @@ import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.derewah.skelegram.telegram.TelegramSessions;
-import org.telegram.telegrambots.meta.generics.BotSession;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.io.IOException;
-import java.util.List;
 
 public class Skelegram extends JavaPlugin {
 
     static Skelegram instance;
-    SkriptAddon addon;
+    private SkriptAddon addon;
 
+    @Getter
+    private TelegramSessions telegramSessions;
 
     public void onEnable(){
         instance = this;
@@ -28,6 +28,7 @@ public class Skelegram extends JavaPlugin {
             e.printStackTrace();
         }
 
+        telegramSessions = new TelegramSessions();
 
         // Register Metrics
         Metrics metrics = new Metrics(this, 18364);
@@ -49,11 +50,7 @@ public class Skelegram extends JavaPlugin {
     }
 
     @Override
-    public void onDisable(){
-        for(BotSession sess : TelegramSessions.sessions.values()){
-            sess.stop();
-        }
-    }
+    public void onDisable(){telegramSessions.clearAllSessions();}
 
 
 

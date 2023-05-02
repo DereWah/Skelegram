@@ -1,18 +1,12 @@
 package org.derewah.skelegram.effects;
 
 
-import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
-import org.derewah.skelegram.telegram.TelegramBot;
-import org.derewah.skelegram.telegram.TelegramSessions;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.BotSession;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+import org.derewah.skelegram.Skelegram;
 
 import static ch.njol.skript.Skript.registerEffect;
 
@@ -36,9 +30,8 @@ public class EffTelegramClearAllSessions extends AsyncEffect {
 
     @Override
     protected void execute(Event event){
-        for(BotSession sess : TelegramSessions.sessions.values()){
-            sess.stop();
-        }
+
+        Skelegram.getInstance().getTelegramSessions().clearAllSessions();
 
     }
 

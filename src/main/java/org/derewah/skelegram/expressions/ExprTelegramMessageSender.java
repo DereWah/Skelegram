@@ -17,9 +17,7 @@ public class ExprTelegramMessageSender extends SimplePropertyExpression<Message,
     }
 
     @Override
-    public User convert(Message message) {
-        return message.getFrom();
-    }
+    public User convert(Message message) { return message.getFrom(); }
 
     @Override
     public Class<? extends User> getReturnType() {

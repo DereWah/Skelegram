@@ -1,12 +1,14 @@
 package org.derewah.skelegram.telegram;
 
 import ch.njol.skript.Skript;
+import org.bukkit.Bukkit;
+import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.generics.BotSession;
 
-;
+
+;import java.util.concurrent.Callable;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
@@ -27,7 +29,10 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update){
         try {
             if (update.hasMessage()) {
-                new BridgeTelegramUpdateMessage(update);
+                Bukkit.getScheduler().callSyncMethod(Skelegram.getInstance(), (Callable) () -> {
+                    Bukkit.getPluginManager().callEvent(new BridgeTelegramUpdateMessage(update));
+                    return null;
+                });
             }
         }catch(Exception e){
             Skript.error(e.toString());

@@ -8,6 +8,7 @@ import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.yggdrasil.Fields;
 
+import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -68,6 +69,32 @@ public class Types {
                     @Override
                     public String toVariableNameString(User user){
                         return user.getUserName();
+                    }
+
+                })
+        );
+        Classes.registerClass(new ClassInfo<>(Chat.class, "telegramchat")
+                .user("telegram chat")
+                .defaultExpression(new EventValueExpression<>(Chat.class))
+                .name("telegram chat")
+                .description("Represents a telegram chat object.")
+                .parser(new Parser<Chat>(){
+
+
+                    @Override
+                    public boolean canParse(ParseContext parseContext){
+                        return false;
+                    }
+
+
+                    @Override
+                    public String toString(Chat chat, int arg1){
+                        return chat.getTitle();
+                    }
+
+                    @Override
+                    public String toVariableNameString(Chat chat){
+                        return chat.getTitle();
                     }
 
                 })
