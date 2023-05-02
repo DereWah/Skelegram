@@ -4,14 +4,15 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class EventTelegramMessage extends Event {
+public class BridgeTelegramUpdateMessage extends Event {
 
     private static final HandlerList handlers = new HandlerList();
 
     private final Update update;
 
 
-    public EventTelegramMessage(Update update) {
+
+    public BridgeTelegramUpdateMessage(Update update) {
         this.update = update;
     }
 
