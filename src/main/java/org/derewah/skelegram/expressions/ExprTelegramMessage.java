@@ -43,7 +43,7 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
 
     @Override
     public String toString(@Nullable Event event, boolean b) {
-        return "event-telegrammessage";
+        return "event-telegram message";
     }
 
     @Override

@@ -70,6 +70,8 @@ public class EffTelegramSendMessage extends AsyncEffect {
             } catch (TelegramApiException e) {
                 Skript.error(e.toString());
             }
+        } else{
+            Skript.error("The Send Telegram Message effect can only be used inside of a Telegram event!");
         }
 
     }
