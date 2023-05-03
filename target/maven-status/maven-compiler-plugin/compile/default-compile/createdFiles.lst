@@ -13,6 +13,8 @@ org\derewah\skelegram\Types$2.class
 org\derewah\skelegram\expressions\ExprTelegramInlineButtonText.class
 org\derewah\skelegram\effects\EffTelegramClearAllSessions.class
 org\derewah\skelegram\events\bukkit\BridgeTelegramUpdateMessage.class
+org\derewah\skelegram\Types$6.class
+org\derewah\skelegram\events\bukkit\BridgeTelegramUpdateCallbackQuery.class
 org\derewah\skelegram\expressions\ExprTelegramMessageSender.class
 org\derewah\skelegram\expressions\ExprTelegramInlineButtonUrl.class
 org\derewah\skelegram\Types$4.class
@@ -20,6 +22,7 @@ org\derewah\skelegram\expressions\ExprTelegramMessageInlineKeyboard.class
 org\derewah\skelegram\expressions\ExprTelegramInlineButtonCallbackData.class
 org\derewah\skelegram\expressions\ExprTelegramMessageInlineKeyboard$1.class
 org\derewah\skelegram\Skelegram.class
+org\derewah\skelegram\expressions\ExprTelegramChatType.class
 org\derewah\skelegram\Types$3.class
 org\derewah\skelegram\Types.class
 org\derewah\skelegram\expressions\ExprTelegramMessage.class

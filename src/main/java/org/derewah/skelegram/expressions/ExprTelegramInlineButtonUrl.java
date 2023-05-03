@@ -13,18 +13,8 @@ public class ExprTelegramInlineButtonUrl extends SimplePropertyExpression<Inline
     }
 
     @Override
-    protected String getPropertyName() {
-        return "url";
-    }
-
-    @Override
     public String convert(InlineKeyboardButton button) {
         return button.getUrl();
-    }
-
-    @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
     }
 
     @Override
@@ -32,7 +22,6 @@ public class ExprTelegramInlineButtonUrl extends SimplePropertyExpression<Inline
         if (mode == Changer.ChangeMode.SET) {return CollectionUtils.array(String.class);}
         return null;
     }
-
 
     @Override
     public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
@@ -43,6 +32,15 @@ public class ExprTelegramInlineButtonUrl extends SimplePropertyExpression<Inline
         if (button != null){
             button.setUrl(String.join(" ", (String[]) delta));
         }
+    }
 
+    @Override
+    public Class<? extends String> getReturnType() {
+        return String.class;
+    }
+    
+    @Override
+    protected String getPropertyName() {
+        return "url";
     }
 }

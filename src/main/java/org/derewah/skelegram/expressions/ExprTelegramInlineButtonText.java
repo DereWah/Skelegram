@@ -4,7 +4,6 @@ import ch.njol.skript.classes.Changer;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import ch.njol.util.coll.CollectionUtils;
 import org.bukkit.event.Event;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 public class ExprTelegramInlineButtonText extends SimplePropertyExpression<InlineKeyboardButton, String> {
@@ -14,18 +13,8 @@ public class ExprTelegramInlineButtonText extends SimplePropertyExpression<Inlin
     }
 
     @Override
-    protected String getPropertyName() {
-        return "text";
-    }
-
-    @Override
     public String convert(InlineKeyboardButton button) {
         return button.getText();
-    }
-
-    @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
     }
 
     @Override
@@ -34,16 +23,24 @@ public class ExprTelegramInlineButtonText extends SimplePropertyExpression<Inlin
         return null;
     }
 
-
     @Override
-    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+    public void change(Event event, Object[] delta, Changer.ChangeMode mode) {
         if(delta == null || delta.length == 0){
             return;
         }
-        InlineKeyboardButton button = getExpr().getSingle(e);
+        InlineKeyboardButton button = getExpr().getSingle(event);
         if (button != null){
             button.setText(String.join(" ", (String[]) delta));
         }
+    }
 
+    @Override
+    public Class<? extends String> getReturnType() {
+        return String.class;
+    }
+
+    @Override
+    protected String getPropertyName() {
+        return "text";
     }
 }

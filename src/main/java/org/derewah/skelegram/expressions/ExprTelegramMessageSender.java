@@ -10,17 +10,16 @@ public class ExprTelegramMessageSender extends SimplePropertyExpression<Message,
         register(ExprTelegramMessageSender.class, User.class, "sender", "telegrammessage");
     }
 
-
-    @Override
-    protected String getPropertyName() {
-        return "sender";
-    }
-
     @Override
     public User convert(Message message) { return message.getFrom(); }
 
     @Override
     public Class<? extends User> getReturnType() {
         return User.class;
+    }
+
+    @Override
+    protected String getPropertyName() {
+        return "sender";
     }
 }

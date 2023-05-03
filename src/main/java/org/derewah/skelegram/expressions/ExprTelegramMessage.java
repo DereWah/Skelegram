@@ -14,12 +14,22 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class ExprTelegramMessage extends SimpleExpression<Message> {
 
-
     static {
         Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[new] [event-]telegram message");
     }
 
     private boolean newInstance = false;
+
+    @Override
+    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
+        if (!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class) && parseResult.hasTag("event")) {
+            Skript.error("You cannot use event-telegram message outside of a TelegramMessage event.");
+            return false;
+        }else if (parseResult.hasTag("new")){
+            newInstance = true;
+        }
+        return true;
+    }
 
     @Override
     protected Message[] get(Event event) {
@@ -50,14 +60,4 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
         return "event-telegram message";
     }
 
-    @Override
-    public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class) && parseResult.hasTag("event")) {
-            Skript.error("You cannot use event-telegram message outside of a TelegramMessage event.");
-            return false;
-        }else if (parseResult.hasTag("new")){
-            newInstance = true;
-        }
-        return true;
-    }
 }

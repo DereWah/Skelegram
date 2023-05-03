@@ -11,12 +11,6 @@ public class ExprTelegramMessageChat extends SimplePropertyExpression<Object, Ch
         register(ExprTelegramMessageChat.class, Chat.class, "chat", "telegrammessage");
     }
 
-
-    @Override
-    protected String getPropertyName() {
-        return "chat";
-    }
-
     @Override
     public Chat convert(Object object) {
         if (object instanceof Message){
@@ -29,5 +23,10 @@ public class ExprTelegramMessageChat extends SimplePropertyExpression<Object, Ch
     @Override
     public Class<? extends Chat> getReturnType() {
         return Chat.class;
+    }
+
+    @Override
+    protected String getPropertyName() {
+        return "chat";
     }
 }

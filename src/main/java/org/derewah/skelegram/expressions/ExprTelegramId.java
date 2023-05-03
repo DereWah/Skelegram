@@ -11,12 +11,6 @@ public class ExprTelegramId extends SimplePropertyExpression<Object, Number> {
         register(ExprTelegramId.class, Number.class, "id", "telegramuser/telegramchat/telegrammessage");
     }
 
-
-    @Override
-    protected String getPropertyName() {
-        return "id";
-    }
-
     @Override
     public Number convert(Object object){
         if (object instanceof User){
@@ -33,5 +27,10 @@ public class ExprTelegramId extends SimplePropertyExpression<Object, Number> {
     @Override
     public Class<? extends Number> getReturnType() {
         return Number.class;
+    }
+
+    @Override
+    protected String getPropertyName() {
+        return "id";
     }
 }

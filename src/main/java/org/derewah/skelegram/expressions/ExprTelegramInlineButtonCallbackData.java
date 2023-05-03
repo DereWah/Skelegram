@@ -13,18 +13,8 @@ public class ExprTelegramInlineButtonCallbackData extends SimplePropertyExpressi
     }
 
     @Override
-    protected String getPropertyName() {
-        return "callback data";
-    }
-
-    @Override
     public String convert(InlineKeyboardButton button) {
         return button.getCallbackData();
-    }
-
-    @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
     }
 
     @Override
@@ -33,16 +23,24 @@ public class ExprTelegramInlineButtonCallbackData extends SimplePropertyExpressi
         return null;
     }
 
-
     @Override
-    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+    public void change(Event event, Object[] delta, Changer.ChangeMode mode) {
         if(delta == null || delta.length == 0){
             return;
         }
-        InlineKeyboardButton button = getExpr().getSingle(e);
+        InlineKeyboardButton button = getExpr().getSingle(event);
         if (button != null){
             button.setCallbackData(String.join(" ", (String[]) delta));
         }
+    }
 
+    @Override
+    public Class<? extends String> getReturnType() {
+        return String.class;
+    }
+
+    @Override
+    protected String getPropertyName() {
+        return "callback data";
     }
 }

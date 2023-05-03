@@ -1,27 +1,18 @@
 package org.derewah.skelegram.effects;
 
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
-import javassist.expr.Expr;
 import org.bukkit.event.Event;
 import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
-
-import org.jetbrains.annotations.NotNull;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.meta.generics.BotSession;
-import org.telegram.telegrambots.meta.generics.TelegramBot;
-
 import static ch.njol.skript.Skript.registerEffect;
-
 
 public class EffTelegramSendMessage extends AsyncEffect {
 
@@ -33,12 +24,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
     private Expression<Object> exprtarget;
     private Expression<Object> message;
     private Expression<String> username;
-
     private boolean specifyBot = false;
-
-
-
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -51,7 +37,6 @@ public class EffTelegramSendMessage extends AsyncEffect {
         }
         return true;
     }
-
 
     @Override
     protected void execute(Event event){
@@ -96,13 +81,8 @@ public class EffTelegramSendMessage extends AsyncEffect {
 
     }
 
-
-
-
-
-
-    public String toString(Event e, boolean debug) {
-        return "telegram message " + message.toString(e, debug) + "to user " + exprtarget.toString(e, debug);
+    public String toString(Event event, boolean debug) {
+        return "telegram message " + message.toString(event, debug) + "to user " + exprtarget.toString(event, debug);
     }
 
 }

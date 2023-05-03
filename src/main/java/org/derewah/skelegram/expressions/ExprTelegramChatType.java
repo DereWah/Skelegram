@@ -2,19 +2,12 @@ package org.derewah.skelegram.expressions;
 
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import org.telegram.telegrambots.meta.api.objects.Chat;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.User;
+
 
 public class ExprTelegramChatType extends SimplePropertyExpression<Chat, String> {
 
     static {
         register(ExprTelegramChatType.class, String.class, "type", "telegramchat");
-    }
-
-
-    @Override
-    protected String getPropertyName() {
-        return "type";
     }
 
     @Override
@@ -25,5 +18,10 @@ public class ExprTelegramChatType extends SimplePropertyExpression<Chat, String>
     @Override
     public Class<? extends String> getReturnType() {
         return String.class;
+    }
+
+    @Override
+    protected String getPropertyName() {
+        return "type";
     }
 }

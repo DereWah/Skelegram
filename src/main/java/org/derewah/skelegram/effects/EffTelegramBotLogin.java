@@ -1,18 +1,12 @@
 package org.derewah.skelegram.effects;
 
-
-
-import ch.njol.skript.lang.Effect;
+import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
-
-
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
-
 import javafx.util.Pair;
 import org.bukkit.event.Event;
-
 import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.telegram.TelegramBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -20,24 +14,17 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.BotSession;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
-import static ch.njol.skript.Skript.registerEffect;
 
 
 public class EffTelegramBotLogin extends AsyncEffect {
 
     static  {
-        registerEffect(EffTelegramBotLogin.class,
+        Skript.registerEffect(EffTelegramBotLogin.class,
                 "telegram login to bot %string% with token %string%");
     }
 
     private Expression<String> username;
     private Expression<String> token;
-
-
-
-
-
-
 
     @Override
     @SuppressWarnings("unchecked")
@@ -47,39 +34,26 @@ public class EffTelegramBotLogin extends AsyncEffect {
         return true;
     }
 
-
     @Override
     protected void execute(Event event){
         if (username.getSingle(event) != null && token.getSingle(event) != null){
             try {
-
-
                 Skelegram.getInstance().getTelegramSessions().stopSession(username.getSingle(event));
-
                 TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
                 TelegramBot bot = new TelegramBot();
-
                 bot.token = token.getSingle(event);
                 bot.username = username.getSingle(event);
-
                 BotSession sess = botsApi.registerBot(bot);
                 Pair<BotSession, TelegramBot> pair = new Pair<>(sess, bot);
                 Skelegram.getInstance().getTelegramSessions().sessions.put(username.getSingle(event), pair);
-
             }catch (TelegramApiException e){
                 e.printStackTrace();
             }
         }
-
     }
 
-
-
-
-
-
-    public String toString(Event e, boolean debug) {
-        return "telegram login to bot " + username.toString(e, debug) + "with token \"" + token.toString(e, debug) + "\"";
+    public String toString(Event event, boolean debug) {
+        return "telegram login to bot " + username.toString(event, debug) + "with token " + token.toString(event, debug);
     }
 
 }

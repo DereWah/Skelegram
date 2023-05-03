@@ -11,7 +11,6 @@ import ch.njol.util.coll.CollectionUtils;
 import org.bukkit.event.Event;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class ExprTelegramInlineKeyboardLine extends SimpleExpression<InlineKeybo
 
     private Expression<Number> lineNumber;
     private Expression<InlineKeyboardMarkup> kb;
-
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
@@ -46,20 +44,10 @@ public class ExprTelegramInlineKeyboardLine extends SimpleExpression<InlineKeybo
     }
 
     @Override
-    public Class<? extends InlineKeyboardButton[]> getReturnType(){
-        return InlineKeyboardButton[].class;
-    }
-
-    @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode){
         if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.ADD || mode == Changer.ChangeMode.REMOVE) {return CollectionUtils.array(InlineKeyboardMarkup[].class);}
         else if (mode == Changer.ChangeMode.DELETE || mode == Changer.ChangeMode.RESET){return CollectionUtils.array(null);}
         return null;
-    }
-
-    @Override
-    public boolean isSingle() {
-        return false;
     }
 
     @Override
@@ -87,6 +75,16 @@ public class ExprTelegramInlineKeyboardLine extends SimpleExpression<InlineKeybo
                     keyboard.set(n, line);
             }
         }
+    }
+
+    @Override
+    public boolean isSingle() {
+        return false;
+    }
+
+    @Override
+    public Class<? extends InlineKeyboardButton[]> getReturnType(){
+        return InlineKeyboardButton[].class;
     }
 
     @Override

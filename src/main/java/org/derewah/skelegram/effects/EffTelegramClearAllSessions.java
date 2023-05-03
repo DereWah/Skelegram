@@ -18,27 +18,16 @@ public class EffTelegramClearAllSessions extends AsyncEffect {
                 "clear all telegram sessions");
     }
 
-
-
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-
         return true;
     }
 
-
     @Override
     protected void execute(Event event){
-
         Skelegram.getInstance().getTelegramSessions().clearAllSessions();
-
     }
-
-
-
-
-
 
     public String toString(Event e, boolean debug) {
         return "telegram clear all sessions";
