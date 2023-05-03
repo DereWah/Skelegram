@@ -16,10 +16,10 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
 
 
     static {
-        Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[event-]telegram message");
+        Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[new] [event-]telegram message");
     }
 
-
+    private boolean newInstance = false;
 
     @Override
     protected Message[] get(Event event) {
@@ -27,6 +27,10 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
             Message message = ((BridgeTelegramUpdateMessage)event).getUpdate().getMessage();
             return new Message[]{message};
         }else{
+            if (newInstance){
+                Message message = new Message();
+                return new Message[]{message};
+            }
             return new Message[0];
         }
     }
@@ -48,9 +52,11 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class)) {
+        if (!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class) && parseResult.hasTag("event")) {
             Skript.error("You cannot use event-telegram message outside of a TelegramMessage event.");
             return false;
+        }else if (parseResult.hasTag("new")){
+            newInstance = true;
         }
         return true;
     }

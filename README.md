@@ -40,12 +40,13 @@ You should use this in case you get an api error 409 saying multiple instances a
 ### Send telegram message
 
 ```
-send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number%
+send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number% [with bot %string%]
 ```
 
 Send a telegram message. The message can be a string or can be an existing message.
-The target chat ID can be used to specify the destination of the message.
-This effect can only be used inside of a Telegram Event.
+The target chat ID can be used to specify the destination of the message. If used inside of a Telegram Event, the bot to use
+is automatically detected. To use it outside of a Telegram Event, specify the username of the bot. If a session exists for
+that bot, the message will be sent.
 
 <details>
 	<summary>Telegram Echo Bot</summary>
@@ -87,6 +88,13 @@ set {_user} to sender of {_mess}
 
 </details>
 
+### Telegram Chat
+
+### Telegram User
+
+### Telegram InlineKeyboard
+
+### Telegram InlineButton
 
 ## Events
 
@@ -107,6 +115,8 @@ Fires whenever a message (or command) is received. You can access the received m
 		```
 </details>
 
+### Telegram CallbackQuery Event
+
 ## Expressions
 
 ### Event Telegram Message
@@ -114,7 +124,7 @@ Fires whenever a message (or command) is received. You can access the received m
 [event-]telegram message
 ```
 
-Returns a telegram message type from inside of an event.
+Returns a telegram message type from inside of a Telegram Message event.
 
 <details>
 	<summary>Telegram Message ID</summary>
@@ -125,6 +135,24 @@ Returns a telegram message type from inside of an event.
             set {_id} to id of {_mess}
             set {_chatid} to id of chat of event-telegram message
             send telegram message "This message has ID %{_id}% in chat %{_chatid}%!" to sender of {_mess}
+		```
+</details>
+
+### New Telegram Message
+```
+new telegram message
+```
+
+Returns a new empty telegram message. You can use other expressions to change its properties, such as text, keyboard, etc.
+You may use this outside of a Telegram Event, but in order to send it you'll have to specify bot you are using.
+
+<details>
+	<summary>Send Custom Message</summary>
+		```
+		on telegram message:
+            set {_mess} to a new telegram message
+            set text of {_mess} to "Hey!"
+            send {_mess} to sender of event-telegram message
 		```
 </details>
 
@@ -154,6 +182,17 @@ Returns the text of a telegram message. Can be changed to edit the message.
 </details>
 
 ### Telegram Id
+```
+id of %telegrammessage%
+id of %telegramuser%
+id of %telegramchat%
+```
+
+Return the Numeric ID of a telegram object. Each user has an unique ID. The ID of a chat is identic to a user ID if it's
+its private chat with the bot. (It is different if it's a group or supergroup etc.).
+Each message has an unique ID inside of a chat.
+
+### Telegram Chat Type
 
 ### Telegram Callback Data of InlineButton
 

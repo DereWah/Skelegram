@@ -10,6 +10,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
 
+import javafx.util.Pair;
 import org.bukkit.event.Event;
 
 import org.derewah.skelegram.Skelegram;
@@ -62,9 +63,8 @@ public class EffTelegramBotLogin extends AsyncEffect {
                 bot.username = username.getSingle(event);
 
                 BotSession sess = botsApi.registerBot(bot);
-
-                Skelegram.getInstance().getTelegramSessions().sessions.put(username.getSingle(event), sess);
-
+                Pair<BotSession, TelegramBot> pair = new Pair<>(sess, bot);
+                Skelegram.getInstance().getTelegramSessions().sessions.put(username.getSingle(event), pair);
 
             }catch (TelegramApiException e){
                 e.printStackTrace();
