@@ -2,7 +2,8 @@ package org.derewah.skelegram.effects;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.SkriptParser;
+import ch.njol.skript.lang.SkriptParser.ParseResult;
+import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
@@ -28,10 +29,14 @@ public class EffTelegramSendMessage extends AsyncEffect {
 
     @Override
     @SuppressWarnings("unchecked")
-    public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
+    public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
         message = (Expression<Object>) expr[0];
         exprtarget = (Expression<Object>) expr[1];
-        specifyBot = parseResult.hasTag("with bot");
+        specifyBot = parseResult.expr.contains(" with bot ");
+        if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class) && !specifyBot){
+            Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
+            return false;
+        }
         if (specifyBot){
             username = (Expression<String>) expr[2];
         }
@@ -41,6 +46,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
     @Override
     protected void execute(Event event){
         if (message.getSingle(event) != null){
+
             SendMessage sendMessage = new SendMessage();
             if(exprtarget.getSingle(event) instanceof User){
                 sendMessage.setChatId(((User) exprtarget.getSingle(event)).getId());
@@ -53,6 +59,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
                 sendMessage.setText((String) message.getSingle(event));
             }else if (message.getSingle(event) instanceof Message){
                 Message mess = (Message) message.getSingle(event);
+
                 sendMessage.setText(mess.getText());
                 sendMessage.setMessageThreadId(mess.getMessageThreadId());
                 if (mess.getReplyToMessage() != null) {
@@ -61,7 +68,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
                 sendMessage.setEntities(mess.getEntities());
                 sendMessage.setReplyMarkup(mess.getReplyMarkup());
             }
-
+            Skript.error(String.valueOf(specifyBot));
             try {
                 if (!specifyBot){
                     if (event instanceof BridgeTelegramUpdateMessage) {
@@ -69,14 +76,19 @@ public class EffTelegramSendMessage extends AsyncEffect {
                     } else{
                         Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
                     }
-                }else if (specifyBot){
-                    Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).executeAsync(sendMessage);
+                }else {
+                    if (Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)) != null) {
+                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).executeAsync(sendMessage);
+                    }else{
+                        Skript.error("Could not find a session with bot " + username.getSingle(event) + ". Did you authenticate the bot?");
+                    }
+
                 }
             } catch (Exception e) {
                 Skript.error(e.toString());
             }
         } else{
-            Skript.error("The Send Telegram Message effect can only be used inside of a Telegram event!");
+            Skript.error("An empty message object can't be sent.");
         }
 
     }

@@ -21,7 +21,7 @@ public class ExprTelegramMessageInlineKeyboard extends SimplePropertyExpression<
 
     @Override
     public Class<?>[] acceptChange(final Changer.ChangeMode mode){
-        if (mode == Changer.ChangeMode.SET) {return CollectionUtils.array(InlineKeyboardMarkup.class);}
+        if (mode == Changer.ChangeMode.SET) {return CollectionUtils.array(InlineKeyboardMarkup[].class);}
         else if (mode == Changer.ChangeMode.DELETE || mode == Changer.ChangeMode.RESET){return CollectionUtils.array(null);}
         return null;
     }
@@ -31,14 +31,15 @@ public class ExprTelegramMessageInlineKeyboard extends SimplePropertyExpression<
         if((delta == null  && mode != Changer.ChangeMode.RESET && mode != Changer.ChangeMode.DELETE) || (delta.length == 0)){
             return;
         }
+        System.out.println(delta);
         Message mess = getExpr().getSingle(event);
         if(mess != null){
             switch (mode) {
                 case SET:
                     InlineKeyboardMarkup kb = ((InlineKeyboardMarkup[]) delta)[0];
                     mess.setReplyMarkup(kb);
+                    break;
                 case RESET:
-                    mess.setReplyMarkup(null);
                 case DELETE:
                     mess.setReplyMarkup(null);
             }

@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class ExprTelegramMessage extends SimpleExpression<Message> {
 
     static {
-        Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[new] [event-]telegram message");
+        Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[[a] new] [event-]telegram message");
     }
 
     private boolean newInstance = false;
@@ -25,7 +25,7 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
         if (!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class) && parseResult.hasTag("event")) {
             Skript.error("You cannot use event-telegram message outside of a TelegramMessage event.");
             return false;
-        }else if (parseResult.hasTag("new")){
+        }else if (parseResult.expr.contains("new")){
             newInstance = true;
         }
         return true;
@@ -39,6 +39,7 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
         }else{
             if (newInstance){
                 Message message = new Message();
+                message.setText("empty message");
                 return new Message[]{message};
             }
             return new Message[0];

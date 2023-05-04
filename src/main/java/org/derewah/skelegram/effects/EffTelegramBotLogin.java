@@ -5,7 +5,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
-import javafx.util.Pair;
+import ch.njol.util.Pair;
 import org.bukkit.event.Event;
 import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.telegram.TelegramBot;

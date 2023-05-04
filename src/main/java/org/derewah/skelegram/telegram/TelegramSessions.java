@@ -1,11 +1,11 @@
 package org.derewah.skelegram.telegram;
 
-import ch.njol.skript.Skript;
-import javafx.util.Pair;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+
+
+import ch.njol.util.Pair;
 import org.telegram.telegrambots.meta.generics.BotSession;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
+
 
 import java.util.HashMap;
 
