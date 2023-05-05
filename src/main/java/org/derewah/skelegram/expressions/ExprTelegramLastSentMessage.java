@@ -66,5 +66,4 @@ public class ExprTelegramLastSentMessage extends SimpleExpression<Message> {
     public String toString(Event event, boolean debug) {
         return "new telegram message with text " + exprBot.toString(event, debug);
     }
-
 }

@@ -102,7 +102,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
     }
 
     public String toString(Event event, boolean debug) {
-        return "telegram message " + message.toString(event, debug) + "to user " + exprtarget.toString(event, debug);
+        return "telegram send message " + message.toString(event, debug) + " to user " + exprtarget.toString(event, debug);
     }
 
 }

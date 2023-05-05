@@ -39,4 +39,5 @@ org\derewah\skelegram\Types.class
 org\derewah\skelegram\Types$1.class
 org\derewah\skelegram\expressions\ExprTelegramNewInlineButton.class
 org\derewah\skelegram\effects\EffTelegramBotLogin.class
+org\derewah\skelegram\effects\EffTelegramClearSession.class
 org\derewah\skelegram\expressions\ExprTelegramCallbackData$1.class

@@ -10,7 +10,6 @@ import org.bukkit.event.Event;
 import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateCallbackQuery;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 

@@ -16,7 +16,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public String username;
     public String token;
-
     public Message lastSent;
 
     @Override

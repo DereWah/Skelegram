@@ -6,11 +6,8 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import javassist.expr.Expr;
 import org.bukkit.event.Event;
-import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
 import org.jetbrains.annotations.Nullable;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 public class ExprTelegramNewInlineButton extends SimpleExpression<InlineKeyboardButton> {

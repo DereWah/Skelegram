@@ -1,6 +1,5 @@
 package org.derewah.skelegram.effects;
 
-
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.util.AsyncEffect;
@@ -10,12 +9,11 @@ import org.derewah.skelegram.Skelegram;
 
 import static ch.njol.skript.Skript.registerEffect;
 
-
 public class EffTelegramClearAllSessions extends AsyncEffect {
 
     static  {
         registerEffect(EffTelegramClearAllSessions.class,
-                "clear all telegram sessions");
+                "(clear|stop) all telegram sessions");
     }
 
     @Override

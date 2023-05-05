@@ -3,7 +3,6 @@ package org.derewah.skelegram.expressions;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 
-
 public class ExprTelegramChatType extends SimplePropertyExpression<Chat, String> {
 
     static {

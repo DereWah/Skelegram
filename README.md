@@ -32,11 +32,21 @@ Create a session and authenticate to a telegram bot, given its username and its 
 ### Clear all telegram sessions
 
 ```
-clear all telegram sessions
+(clear|stop) all telegram sessions
 ```
 
 Close all the telegram sessions that are active. Stops any running bot.
 You should use this in case you get an api error 409 saying multiple instances are running a single bot.
+Please note that closing a session may take up to 50 seconds, as it is delayed by the Telegram API itself.
+
+### Clear Specific Telegram Session
+
+```
+(clear|stop) telegram session with bot %string%
+```
+
+Closes the telegram session of a specific bot.
+Please note that closing a session may take up to 50 seconds, as it is delayed by the Telegram API itself.
 
 ### Send telegram message
 

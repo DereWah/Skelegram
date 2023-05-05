@@ -9,7 +9,6 @@ import static org.bukkit.ChatColor.*;
 public class Commands implements CommandExecutor {
 
     private final Skelegram plugin;
-
     public Commands(Skelegram plugin) {
         this.plugin = plugin;
     }

@@ -15,7 +15,6 @@ public class Skelegram extends JavaPlugin {
 
     static Skelegram instance;
     private SkriptAddon addon;
-
     @Getter
     private TelegramSessions telegramSessions;
 
@@ -27,43 +26,24 @@ public class Skelegram extends JavaPlugin {
         } catch(IOException e){
             e.printStackTrace();
         }
-
         telegramSessions = new TelegramSessions();
-
         // Register Metrics
         Metrics metrics = new Metrics(this, 18364);
-
         metrics.addCustomChart(new SimplePie("skript_version", () ->
                 Bukkit.getServer().getPluginManager().getPlugin("Skript").getDescription().getVersion()));
         metrics.addCustomChart(new SimplePie("skelegram_version", () ->
                 this.getDescription().getVersion()));
-
-
         getCommand("skelegram").setExecutor(new Commands(this));
-
-
         Bukkit.getLogger().info("[Skelegram] has been enabled!");
-
-
-
-
     }
 
     @Override
     public void onDisable(){telegramSessions.clearAllSessions();}
-
-
-
     public static Skelegram getInstance(){
-
         return instance;
     }
 
     public SkriptAddon getAddonInstance(){
         return addon;
     }
-
-
-
-
 }

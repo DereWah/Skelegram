@@ -1,7 +1,6 @@
 package org.derewah.skelegram.events;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
@@ -37,7 +36,6 @@ public class EvtOnTelegramCallbackQuery extends SkriptEvent {
             }
         }, EventValues.TIME_NOW);
     }
-
 
     private Literal<String> text;
     @Override
