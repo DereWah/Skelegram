@@ -3,13 +3,7 @@
 
 A Skript Addon that allows users to create fully functional Telegram Bots.
 
-[Documentation]()
-
-
-## Documentation
-
-[![SkriptHubViewTheDocs](http://skripthub.net/static/addon/ViewTheDocsButton.png)]()
-
+# Documentation
 
 ## Effects
 
