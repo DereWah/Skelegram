@@ -10,6 +10,7 @@ A Skript Addon that allows users to create fully functional Telegram Bots.
 
 [![SkriptHubViewTheDocs](http://skripthub.net/static/addon/ViewTheDocsButton.png)](http://skripthub.net/docs/?addon=Skelegram)
 
+
 ## Effects
 
 ### Telegram Bot Login
@@ -55,6 +56,28 @@ that bot, the message will be sent.
             on telegram message:
                 set {_mess} to event-telegram message #save received message in a variable
                 send telegram message {_mess} to event-telegramuser #echo their message
+        ```
+</details>
+
+### Send telegram message
+
+```
+reply to telegram message %telegrammessage% with %telegrammessage/string% [with bot %-string%]
+telegram reply to %telegrammessage% with %telegrammessage/string% [with bot %-string%]
+```
+
+Send a telegram message, as a reply to another message. The reply message can be a string or can be an existing message.
+If used inside of a Telegram Event, the bot to use is automatically detected.
+To use it outside of a Telegram Event, specify the username of the bot. If a session exists for
+that bot, the message will be sent.
+
+<details>
+	<summary>Telegram Send Reply</summary>
+
+		```
+            on telegram message:
+                set {_mess} to event-telegram message #save received message in a variable
+                reply to telegram message {_mess} with "This message has been sent as a reply! Yay!" #
         ```
 </details>
 
@@ -221,6 +244,22 @@ Fires whenever a message (or command) is received. You can access the received m
 </details>
 
 ### Telegram CallbackQuery Event
+```
+on [telegram] callback query [[with data] %string%]
+```
+
+Fires whenever a button with a callback data is fired. You can specify for which data to listen or leave it blank to
+listen for any button press.
+
+<details>
+	<summary>Notify all players of a button press</summary>
+
+        ```
+		on callback query with data "button":
+            send message "%event-telegram user% has clicked on a button!" to all players
+		```
+</details>
+
 
 ## Expressions
 
@@ -245,7 +284,7 @@ Returns a telegram message type from inside of a Telegram Message event.
 
 ### New Telegram Message
 ```
-new telegram message
+new telegram message with text %string%
 ```
 
 Returns a new empty telegram message. You can use other expressions to change its properties, such as text, keyboard, etc.
@@ -256,8 +295,7 @@ You may use this outside of a Telegram Event, but in order to send it you'll hav
 
 		```
 		on telegram message:
-            set {_mess} to a new telegram message
-            set text of {_mess} to "Hey!"
+            set {_mess} to a new telegram message with text "Hey!"
             send {_mess} to sender of event-telegram message
 		```
 </details>
@@ -294,19 +332,47 @@ id of %telegramuser%
 id of %telegramchat%
 ```
 
-Return the Numeric ID of a telegram object. Each user has an unique ID. The ID of a chat is identic to a user ID if it's
+Returns the Numeric ID of a telegram object. Each user has an unique ID. The ID of a chat is identic to a user ID if it's
 its private chat with the bot. (It is different if it's a group or supergroup etc.).
-Each message has an unique ID inside of a chat.
+Each message has an unique ID inside of a chat. Can't be set.
 
-### Telegram Chat Type
+### Chat Type
+```
+type of %telegramchat%
+```
 
-### Telegram Callback Data of InlineButton
+Returns the type of a telegram chat. It can be "PRIVATE", "BOT", "GROUP", "SUPERGROUP" or "CHANNEL". Can't be set.
 
-### Telegram Text of InlineButton
+### Callback Data of InlineButton
+```
+callback data of %inlinebutton%
+```
 
-### Telegram Url of InlineButton
+The callback data of an Inline Button. This is the text that is sent to the bot on a button press, and it can be
+listened for with the On Callback Query event.
 
-### Telegram Line of InlineKeyboard
+### Text of InlineButton
+```
+text of %inlinebutton%
+```
+
+The Displayed text of an Inline Button. This is the actual message a button has in the chat.
+
+### Url of InlineButton
+```
+url of %inlinebutton%
+```
+
+The URL of an Inline Button. Note that a button can't have both a callback data and an URL. The link will be opened
+on button press.
+
+### Row of InlineKeyboard
+```
+[the] %number%(st|nd|rd|th) row of [the] [inline] keyboard %inlinekeyboard%
+```
+
+The row of an existing InlineKeyboard. You can add, remove, set and clear rows. Setting a row that doesn't exist on the
+keyboard will simply append it to the bottom.
 
 ### Telegram InlineKeyboard of Message
 
