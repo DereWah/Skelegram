@@ -53,7 +53,7 @@ that bot, the message will be sent.
 
 		```
             on telegram message:
-                set {_mess} to event-telegrammessage #save received message in a variable
+                set {_mess} to event-telegram message #save received message in a variable
                 send telegram message {_mess} to event-telegramuser #echo their message
         ```
 </details>
@@ -64,19 +64,12 @@ that bot, the message will be sent.
 ### Telegram Message
 ```
 %telegrammessage%
-%telegrammessages%
+event-telegram message
 telegram message
 ```
 
-This type holds all the information about a received message. As of right now you can only get this type from an
-on telegram message event, meaning you can't really build a new message from scratch.
-
-#### Usage
-```
-set {_mess} to event-telegram message # in an on telegram message event
-set text of {_mess} to "heya"
-set {_user} to sender of {_mess}
-```
+This type holds all the information about a message.
+You can either get this object in a telegram event (event-telegram message) or by creating a new one (new telegram message with text %string%)
 
 <details>
 	<summary>Telegram ID Retriever bot</summary>
@@ -89,12 +82,124 @@ set {_user} to sender of {_mess}
 </details>
 
 ### Telegram Chat
+```
+%telegramchat%
+event-telegram chat
+telegram chat
+```
+
+This type holds all the information about a telegram chat.
+
+#### Usage
+```
+type of %telegramchat%
+id of %telegramchat%
+```
+
+<details>
+	<summary>Telegram Chat Type</summary>
+
+		```
+        on telegram message:
+            send "Received a message from a chat type %type of chat of event-telegram message%."
+		```
+
+</details>
 
 ### Telegram User
+```
+%telegramuser%
+event-telegram user
+telegram user
+```
 
-### Telegram InlineKeyboard
+This type represents a Telegram User.
 
-### Telegram InlineButton
+#### Usage
+```
+id of %telegramchat%
+```
+
+<details>
+	<summary>Send Telegram Message via ID</summary>
+
+		```
+        on load:
+            send telegram message "Someone reloaded the skript!" to {@saved_user} with bot "{@username}"
+		```
+
+</details>
+
+
+### Telegram Inline Button
+```
+%inlinekeyboard%
+inline keyboard
+```
+
+This type represents a Telegram Inline Keyboard. A keyboard is a matrix of buttons (double list). You can
+access the rows of the keyboard with the row expression.
+
+#### Usage
+```
+1st row of keyboard %inlinekeyboard%
+inline keyboard of %telegrammessage%
+```
+
+<details>
+	<summary>Remove Inline Keyboard of Message</summary>
+
+		```
+        on telegram message:
+            if inline keyboard of event-telegram message is set:
+                set {_mess} to event-telegram message
+                delete inline keyboard of {_mess}
+                edit telegram message event-telegram message to {_mess}
+		```
+
+</details>
+
+### Telegram Inline Button
+```
+%inlinebutton%
+inline button
+```
+
+This type represents a Telegram Inline Button. You can't add simply the button to a message, but you need first to add it
+into a keyboard. You can then add the keyboard to the message. (Otherwise, how would Telegram know which position the button would
+have to be?)
+
+Of a button, you can define its text (the displayed button itself) and its action. If you set its URL, it will open automatically
+a link when clicked. If you set its callback data, you can specify the data that is sent to the bot when clicked. You can
+listen to such data with the EvtCallbackQuery
+
+#### Usage
+```
+text of %inlinebutton%
+callback data of %inlinebutton%
+url of %inlinebutton%
+```
+
+<details>
+	<summary>Send Message with Buttons</summary>
+
+		```
+        on telegram message:
+            set {_mess} to a new telegram message with text "message content"
+            set {_linkbutton1} to a new inline button with text "link button" with url "https://t.me/SkriptItaly"
+            set {_linkbutton2} to a new inline button with text "link button 2" with url "https://t.me/SkriptItaly_bot"
+            set {_databutton} to a new inline button with text "data button" with callback data "button_clicked"
+            #the callback data will be listened in a on callback query event.
+            set {_kb} to a new inline keyboard with buttons {_linkbutton1} and {_linkbutton2}
+            set 2nd line of keyboard {_kb} to {_databutton}
+            set inline keyboard of {_mess} to {_kb}
+            send telegram message {_mess} to event-telegram user
+
+        on callback query "button_clicked":
+            send message "Someone clicked on the data button! We can do stuff down here!" to all players
+		```
+
+</details>
 
 ## Events
 
@@ -148,6 +253,7 @@ You may use this outside of a Telegram Event, but in order to send it you'll hav
 
 <details>
 	<summary>Send Custom Message</summary>
+
 		```
 		on telegram message:
             set {_mess} to a new telegram message
