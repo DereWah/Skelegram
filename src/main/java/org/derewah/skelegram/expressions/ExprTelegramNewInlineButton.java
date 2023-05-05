@@ -16,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 public class ExprTelegramNewInlineButton extends SimpleExpression<InlineKeyboardButton> {
 
     static {
-        System.out.println("registered new inline button expression");
         Skript.registerExpression(ExprTelegramNewInlineButton.class, InlineKeyboardButton.class, ExpressionType.COMBINED,
                 "[a] [new] [telegram] inline [keyboard] button",
                 "[a] [new] [telegram] inline [keyboard] button with text %string% with url %string%",

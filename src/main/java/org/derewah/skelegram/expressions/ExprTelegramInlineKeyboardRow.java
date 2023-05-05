@@ -19,7 +19,8 @@ import java.util.List;
 public class ExprTelegramInlineKeyboardRow extends SimpleExpression<InlineKeyboardButton> {
 
     static {
-        Skript.registerExpression(ExprTelegramInlineKeyboardRow.class, InlineKeyboardButton.class, ExpressionType.COMBINED, "[the] %number%(st|nd|rd|th) row of [the] [inline] keyboard %inlinekeyboard%");
+        Skript.registerExpression(ExprTelegramInlineKeyboardRow.class, InlineKeyboardButton.class, ExpressionType.COMBINED,
+                "[the] %number%(st|nd|rd|th) row of [the] [inline] keyboard %inlinekeyboard%");
     }
 
     private Expression<Number> rowNumber;
@@ -41,8 +42,8 @@ public class ExprTelegramInlineKeyboardRow extends SimpleExpression<InlineKeyboa
             n = 0;
         }
         if (keyboard != null && keyboard.getKeyboard().get(n) != null) {
-
-            return (InlineKeyboardButton[]) keyboard.getKeyboard().get(n).toArray(); //TBD FIX ClassCastError!
+            List<InlineKeyboardButton> row = keyboard.getKeyboard().get(n);
+            return row.toArray(new InlineKeyboardButton[row.size()]);
         }
         return new InlineKeyboardButton[0];
     }
@@ -53,7 +54,7 @@ public class ExprTelegramInlineKeyboardRow extends SimpleExpression<InlineKeyboa
             case SET:
             case ADD:
             case REMOVE:
-                return CollectionUtils.array(InlineKeyboardMarkup[].class);
+                return CollectionUtils.array(InlineKeyboardButton[].class);
             case DELETE:
             case RESET:
                 return null;
@@ -62,38 +63,44 @@ public class ExprTelegramInlineKeyboardRow extends SimpleExpression<InlineKeyboa
     }
 
     @Override
-    public void change(Event e, Object[] delta, Changer.ChangeMode mode) {
+    public void change(Event event, Object[] delta, Changer.ChangeMode mode) {
         if((delta == null  && mode != Changer.ChangeMode.RESET && mode != Changer.ChangeMode.DELETE) || (delta.length == 0)){
             return;
         }
-        List<List<InlineKeyboardButton>> keyboard = kb.getSingle(e).getKeyboard();
-        Integer n = rowNumber != null ? rowNumber.getSingle(e).intValue()-1 : null;
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>(List.copyOf(kb.getSingle(event).getKeyboard()));
+        Integer n = rowNumber != null ? rowNumber.getSingle(event).intValue()-1 : null;
         assert n != null;
         if(n < 0){
             n = 0;
-        }else if(n >= keyboard.toArray().length){
-            n = keyboard.toArray().length-1;
         }
         if(keyboard != null){
-            List<InlineKeyboardButton> row = keyboard.get(n);
             List<InlineKeyboardButton> deltaLine = Arrays.asList((InlineKeyboardButton[]) delta);
+            List<InlineKeyboardButton> row;
             switch (mode) {
                 case SET:
-                    keyboard.set(n, deltaLine);
+                    if(n < keyboard.toArray().length) {
+                        keyboard.set(n, deltaLine);
+                        break;
+                    }else{
+                        keyboard.add(deltaLine); //if higher append as new row
+                        break;
+                    }
+                case ADD:
+                    row = new ArrayList<>(List.copyOf(keyboard.get(n)));
+                    row.addAll(deltaLine);
+                    keyboard.set(n, row);
                     break;
                 case RESET:
                 case DELETE:
                     keyboard.set(n, null);
                     break;
-                case ADD:
-                    row.addAll(deltaLine);
-                    keyboard.set(n, row);
-                    break;
                 case REMOVE:
+                    row = new ArrayList<>(List.copyOf(keyboard.get(n)));
                     row.removeAll(deltaLine);
                     keyboard.set(n, row);
                     break;
             }
+            kb.getSingle(event).setKeyboard(keyboard);
         }
     }
 

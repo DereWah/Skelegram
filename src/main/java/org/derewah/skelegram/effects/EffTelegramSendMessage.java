@@ -19,7 +19,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
 
     static  {
         registerEffect(EffTelegramSendMessage.class,
-                "send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number% [with bot %string%]");
+                "send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number% [with bot %-string%]");
     }
 
     private Expression<Object> exprtarget;

@@ -15,35 +15,21 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class ExprTelegramMessage extends SimpleExpression<Message> {
 
     static {
-        Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[[a] new] [event-]telegram message");
+        Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[[a] new] telegram message");
     }
 
     private boolean newInstance = false;
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
-        if (!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class) && parseResult.hasTag("event")) {
-            Skript.error("You cannot use event-telegram message outside of a TelegramMessage event.");
-            return false;
-        }else if (parseResult.expr.contains("new")){
-            newInstance = true;
-        }
         return true;
     }
 
     @Override
     protected Message[] get(Event event) {
-        if (event instanceof BridgeTelegramUpdateMessage) {
-            Message message = ((BridgeTelegramUpdateMessage)event).getUpdate().getMessage();
-            return new Message[]{message};
-        }else{
-            if (newInstance){
-                Message message = new Message();
-                message.setText("empty message");
-                return new Message[]{message};
-            }
-            return new Message[0];
-        }
+        Message message = new Message();
+        message.setText("empty message");
+        return new Message[]{message};
     }
 
     @Override
@@ -57,8 +43,8 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
     }
 
     @Override
-    public String toString(@Nullable Event event, boolean b) {
-        return "event-telegram message";
+    public String toString(Event event, boolean b) {
+        return "new telegram message";
     }
 
 }
