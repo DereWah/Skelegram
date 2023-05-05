@@ -10,6 +10,7 @@ org\derewah\skelegram\effects\EffTelegramSendMessage.class
 org\derewah\skelegram\telegram\TelegramBot.class
 org\derewah\skelegram\Commands.class
 org\derewah\skelegram\expressions\ExprTelegramChat.class
+org\derewah\skelegram\expressions\ExprTelegramLastSentMessage.class
 org\derewah\skelegram\telegram\TelegramSessions.class
 org\derewah\skelegram\events\EvtOnTelegramMessage$1.class
 org\derewah\skelegram\expressions\ExprTelegramCallbackData.class

@@ -13,6 +13,8 @@ import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.concurrent.CompletableFuture;
+
 import static ch.njol.skript.Skript.registerEffect;
 
 public class EffTelegramReplyMessage extends AsyncEffect {
@@ -61,15 +63,18 @@ public class EffTelegramReplyMessage extends AsyncEffect {
             try {
                 if (!specifyBot){
                     if (event instanceof BridgeTelegramUpdateMessage) {
-                        ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(replyMessage);
+                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(replyMessage);
+                        ((BridgeTelegramUpdateMessage) event).getClient().lastSent = sent.get();
                     }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
-                        ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(replyMessage);
+                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(replyMessage);
+                        ((BridgeTelegramUpdateCallbackQuery) event).getClient().lastSent = sent.get();
                     } else{
                         Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
                     }
                 }else {
                     if (Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)) != null) {
-                        Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).executeAsync(replyMessage);
+                        CompletableFuture<Message> sent = Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).executeAsync(replyMessage);
+                        Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).lastSent = sent.get();
                     }else{
                         Skript.error("Could not find a session with bot " + botName.getSingle(event) + ". Did you authenticate the bot?");
                     }

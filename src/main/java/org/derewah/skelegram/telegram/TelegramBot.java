@@ -6,6 +6,7 @@ import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateCallbackQuery;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 
@@ -15,6 +16,8 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     public String username;
     public String token;
+
+    public Message lastSent;
 
     @Override
     public String getBotUsername() {

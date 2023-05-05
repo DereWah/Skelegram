@@ -8,11 +8,15 @@ import ch.njol.skript.util.AsyncEffect;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
 import org.derewah.skelegram.Skelegram;
+import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateCallbackQuery;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
+
+import java.util.concurrent.CompletableFuture;
+
 import static ch.njol.skript.Skript.registerEffect;
 
 public class EffTelegramSendMessage extends AsyncEffect {
@@ -33,7 +37,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
         message = (Expression<Object>) expr[0];
         exprtarget = (Expression<Object>) expr[1];
         specifyBot = parseResult.expr.contains(" with bot ");
-        if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class) && !specifyBot){
+        if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class, BridgeTelegramUpdateCallbackQuery.class) && !specifyBot){
             Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
             return false;
         }
@@ -71,13 +75,18 @@ public class EffTelegramSendMessage extends AsyncEffect {
             try {
                 if (!specifyBot){
                     if (event instanceof BridgeTelegramUpdateMessage) {
-                        ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(sendMessage);
+                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(sendMessage);
+                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).lastSent = sent.get();
+                    }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
+                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(sendMessage);
+                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).lastSent = sent.get();
                     } else{
                         Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
                     }
                 }else {
                     if (Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)) != null) {
-                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).executeAsync(sendMessage);
+                        CompletableFuture<Message> sent = Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).executeAsync(sendMessage);
+                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).lastSent = sent.get();
                     }else{
                         Skript.error("Could not find a session with bot " + username.getSingle(event) + ". Did you authenticate the bot?");
                     }

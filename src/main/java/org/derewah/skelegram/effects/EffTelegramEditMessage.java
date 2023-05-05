@@ -35,7 +35,7 @@ public class EffTelegramEditMessage extends AsyncEffect {
         message = (Expression<Object>) expr[1];
         specifyBot = parseResult.expr.contains(" with bot ");
         if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class, BridgeTelegramUpdateCallbackQuery.class) && !specifyBot){
-            Skript.error("You're using the Edit Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
+            Skript.error("You're using the Edit Telegram Message effect outside of a Telegram event. Specify the username of the bot you are editing a message from to use this effect here.");
             return false;
         }
         if (specifyBot){

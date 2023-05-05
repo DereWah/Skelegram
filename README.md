@@ -300,6 +300,26 @@ You may use this outside of a Telegram Event, but in order to send it you'll hav
 		```
 </details>
 
+### Last Telegram Sent Message
+```
+[the] last sent telegram message [with bot %string%]
+```
+
+Returns the last sent message. Use this exclusively and immediately after sending a message.
+
+<details>
+	<summary>Edit Sent Message</summary>
+
+		```
+		on telegram message:
+            reply to telegram message event-telegram message with "Welcome!"
+            set {_mess} to last sent message
+            wait 5 seconds
+            edit telegram message {_mess} to "5 second have passed! Wow!"
+		```
+
+</details>
+
 ### Telegram Chat of Message
 ```
 chat of %telegrammessage%
@@ -375,8 +395,18 @@ The row of an existing InlineKeyboard. You can add, remove, set and clear rows. 
 keyboard will simply append it to the bottom.
 
 ### Telegram InlineKeyboard of Message
+```
+inline keyboard of %telegrammessage%
+```
+
+The Inline Keyboard of a Telegram Message. You can use this to add a keyboard to existing messages, before sending them.
 
 ### Telegram Sender of Message
+```
+sender of %telegrammessage%
+```
+
+The sender of a Telegram Message.
 
 ## FAQ
 
