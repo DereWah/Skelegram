@@ -36,18 +36,22 @@ public class EffTelegramBotLogin extends AsyncEffect {
     @Override
     protected void execute(Event event){
         if (username.getSingle(event) != null && token.getSingle(event) != null){
-            try {
-                Skelegram.getInstance().getTelegramSessions().stopSession(username.getSingle(event));
-                TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-                TelegramBot bot = new TelegramBot();
-                bot.token = token.getSingle(event);
-                bot.username = username.getSingle(event);
-                BotSession sess = botsApi.registerBot(bot);
-                Pair<BotSession, TelegramBot> pair = new Pair<>(sess, bot);
-                Skelegram.getInstance().getTelegramSessions().sessions.put(username.getSingle(event), pair);
-            }catch (TelegramApiException e){
-                e.printStackTrace();
+            if(Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)) == null) {
+                try {
+                    TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+                    TelegramBot bot = new TelegramBot();
+                    bot.token = token.getSingle(event);
+                    bot.username = username.getSingle(event);
+                    BotSession sess = botsApi.registerBot(bot);
+                    Pair<BotSession, TelegramBot> pair = new Pair<>(sess, bot);
+                    Skelegram.getInstance().getTelegramSessions().sessions.put(username.getSingle(event), pair);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
+            else{
+                Skript.error("An active session with the telegram bot " + username.getSingle(event) + " already exists.");
+                }
         }
     }
 

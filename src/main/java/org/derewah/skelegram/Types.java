@@ -8,6 +8,7 @@ import ch.njol.skript.lang.ParseContext;
 import ch.njol.skript.registrations.Classes;
 import ch.njol.yggdrasil.Fields;
 
+import org.derewah.skelegram.telegram.TelegramBot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -156,6 +157,29 @@ public class Types {
                     @Override
                     public String toVariableNameString(CallbackQuery query){
                         return query.toString();
+                    }
+                })
+        );
+
+        Classes.registerClass(new ClassInfo<>(TelegramBot.class, "telegrambot")
+                .user("telegram bot")
+                .defaultExpression(new EventValueExpression<>(TelegramBot.class))
+                .name("telegram bot")
+                .description("Represents a telegram bot object.")
+                .parser(new Parser<TelegramBot>(){
+                    @Override
+                    public boolean canParse(ParseContext parseContext){
+                        return false;
+                    }
+
+                    @Override
+                    public String toString(TelegramBot bot, int debug){
+                        return bot.getBotUsername();
+                    }
+
+                    @Override
+                    public String toVariableNameString(TelegramBot bot){
+                        return bot.toString();
                     }
                 })
         );

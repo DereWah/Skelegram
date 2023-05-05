@@ -5,6 +5,7 @@ import ch.njol.skript.lang.util.SimpleEvent;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
+import org.derewah.skelegram.telegram.TelegramBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 
@@ -25,6 +26,11 @@ public class EvtOnTelegramMessage{
                 return event.getUpdate().getMessage().getFrom();
             }
         }, EventValues.TIME_NOW);
-
+        EventValues.registerEventValue(BridgeTelegramUpdateMessage.class, TelegramBot.class, new Getter<TelegramBot, BridgeTelegramUpdateMessage>(){
+            @Override
+            public TelegramBot get(BridgeTelegramUpdateMessage event){
+                return event.getClient();
+            }
+        }, EventValues.TIME_NOW);
     }
 }
