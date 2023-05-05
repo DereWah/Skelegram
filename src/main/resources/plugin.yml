@@ -1,7 +1,7 @@
 name: Skelegram
 author: DereWah
 description: A skript to interface with the Telegram Bot API.
-version: 1.0
+version: 1.0-ALPHA
 main: org.derewah.skelegram.Skelegram
 depend: [Skript]
 commands:
