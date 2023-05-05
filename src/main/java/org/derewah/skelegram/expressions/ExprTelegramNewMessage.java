@@ -4,31 +4,29 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.parser.ParserInstance;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import org.bukkit.event.Event;
-import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
-import org.jetbrains.annotations.Nullable;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-public class ExprTelegramMessage extends SimpleExpression<Message> {
+public class ExprTelegramNewMessage extends SimpleExpression<Message> {
 
     static {
-        Skript.registerExpression(ExprTelegramMessage.class, Message.class, ExpressionType.SIMPLE, "[[a] new] telegram message");
+        Skript.registerExpression(ExprTelegramNewMessage.class, Message.class, ExpressionType.SIMPLE, "[[a] new] telegram message with text %string%");
     }
 
-    private boolean newInstance = false;
+    private Expression<String> text;
 
     @Override
     public boolean init(Expression<?>[] expressions, int i, Kleenean kleenean, SkriptParser.ParseResult parseResult) {
+        text = (Expression<String>) expressions[0];
         return true;
     }
 
     @Override
     protected Message[] get(Event event) {
         Message message = new Message();
-        message.setText("empty message");
+        message.setText(text.getSingle(event));
         return new Message[]{message};
     }
 
@@ -43,8 +41,8 @@ public class ExprTelegramMessage extends SimpleExpression<Message> {
     }
 
     @Override
-    public String toString(Event event, boolean b) {
-        return "new telegram message";
+    public String toString(Event event, boolean debug) {
+        return "new telegram message with text " + text.toString(event, debug);
     }
 
 }

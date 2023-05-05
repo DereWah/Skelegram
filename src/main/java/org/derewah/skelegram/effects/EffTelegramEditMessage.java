@@ -11,16 +11,16 @@ import org.derewah.skelegram.Skelegram;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateCallbackQuery;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import static ch.njol.skript.Skript.registerEffect;
 
-public class EffTelegramReplyMessage extends AsyncEffect {
+public class EffTelegramEditMessage extends AsyncEffect {
 
     static  {
-        registerEffect(EffTelegramReplyMessage.class,
-                "reply to telegram message %telegrammessage% with %telegrammessage/string% [with bot %-string%]",
-                "telegram reply to %telegrammessage% with %telegrammessage/string% [with bot %-string%]");
+        registerEffect(EffTelegramEditMessage.class,
+                "edit telegram message %telegrammessage% to %telegrammessage/string% [with bot %-string%]");
     }
 
     private Expression<Message> replyTo;
@@ -35,7 +35,7 @@ public class EffTelegramReplyMessage extends AsyncEffect {
         message = (Expression<Object>) expr[1];
         specifyBot = parseResult.expr.contains(" with bot ");
         if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class, BridgeTelegramUpdateCallbackQuery.class) && !specifyBot){
-            Skript.error("You're using the Reply Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
+            Skript.error("You're using the Edit Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
             return false;
         }
         if (specifyBot){
@@ -47,29 +47,29 @@ public class EffTelegramReplyMessage extends AsyncEffect {
     @Override
     protected void execute(Event event){
         if (message != null && replyTo != null && !message.getSingle(event).equals("")){
-            SendMessage replyMessage = null;
+            EditMessageText editMessage = null;
             if(message.getSingle(event) instanceof String) {
-                replyMessage = new SendMessage(replyTo.getSingle(event).getChatId().toString(), (String) message.getSingle(event));
+                editMessage = new EditMessageText((String) message.getSingle(event));
             }else if (message.getSingle(event) instanceof Message){
                 Message mess = (Message) message.getSingle(event);
-                replyMessage = new SendMessage(replyTo.getSingle(event).getChatId().toString(), mess.getText());
-                replyMessage.setMessageThreadId(mess.getMessageThreadId());
-                replyMessage.setEntities(mess.getEntities());
-                replyMessage.setReplyMarkup(mess.getReplyMarkup());
+                editMessage = new EditMessageText(mess.getText());
+                editMessage.setEntities(mess.getEntities());
+                editMessage.setReplyMarkup(mess.getReplyMarkup());
             }
-            replyMessage.setReplyToMessageId(replyTo.getSingle(event).getMessageId());
+            editMessage.setChatId(replyTo.getSingle(event).getChatId());
+            editMessage.setMessageId(replyTo.getSingle(event).getMessageId());
             try {
                 if (!specifyBot){
                     if (event instanceof BridgeTelegramUpdateMessage) {
-                        ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(replyMessage);
+                        ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(editMessage);
                     }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
-                        ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(replyMessage);
+                        ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(editMessage);
                     } else{
                         Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
                     }
                 }else {
                     if (Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)) != null) {
-                        Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).executeAsync(replyMessage);
+                        Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).executeAsync(editMessage);
                     }else{
                         Skript.error("Could not find a session with bot " + botName.getSingle(event) + ". Did you authenticate the bot?");
                     }

@@ -68,7 +68,6 @@ public class EffTelegramSendMessage extends AsyncEffect {
                 sendMessage.setEntities(mess.getEntities());
                 sendMessage.setReplyMarkup(mess.getReplyMarkup());
             }
-            Skript.error(String.valueOf(specifyBot));
             try {
                 if (!specifyBot){
                     if (event instanceof BridgeTelegramUpdateMessage) {

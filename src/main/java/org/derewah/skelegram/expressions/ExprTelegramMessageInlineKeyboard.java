@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 public class ExprTelegramMessageInlineKeyboard extends SimplePropertyExpression<Message, InlineKeyboardMarkup> {
 
     static {
-        register(ExprTelegramMessageInlineKeyboard.class, InlineKeyboardMarkup.class, "inline keyboard", "telegrammessage");
+        register(ExprTelegramMessageInlineKeyboard.class, InlineKeyboardMarkup.class, "[inline] keyboard", "telegrammessage");
     }
 
     @Override
@@ -31,7 +31,6 @@ public class ExprTelegramMessageInlineKeyboard extends SimplePropertyExpression<
         if((delta == null  && mode != Changer.ChangeMode.RESET && mode != Changer.ChangeMode.DELETE) || (delta.length == 0)){
             return;
         }
-        System.out.println(delta);
         Message mess = getExpr().getSingle(event);
         if(mess != null){
             switch (mode) {
