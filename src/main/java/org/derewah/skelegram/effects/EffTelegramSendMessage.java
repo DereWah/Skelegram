@@ -76,10 +76,10 @@ public class EffTelegramSendMessage extends AsyncEffect {
                 if (!specifyBot){
                     if (event instanceof BridgeTelegramUpdateMessage) {
                         CompletableFuture<Message> sent = ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(sendMessage);
-                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).lastSent = sent.get();
+                        ((BridgeTelegramUpdateMessage) event).getClient().lastSent = sent.get();
                     }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
                         CompletableFuture<Message> sent = ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(sendMessage);
-                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).lastSent = sent.get();
+                        ((BridgeTelegramUpdateMessage) event).getClient().lastSent = sent.get();
                     } else{
                         Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
                     }
