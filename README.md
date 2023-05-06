@@ -38,7 +38,7 @@ Please note that closing a session may take up to 50 seconds, as it is delayed b
 ### Clear Specific Telegram Session
 
 ```
-(clear|stop) telegram session with bot %string%
+(clear|stop) telegram session of bot %string%
 ```
 
 Closes the telegram session of a specific bot.
