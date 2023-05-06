@@ -65,7 +65,7 @@ that bot, the message will be sent.
         ```
 </details>
 
-### Send telegram message
+### Reply telegram message
 
 ```
 reply to telegram message %telegrammessage% with %telegrammessage/string% [with bot %-string%]
@@ -160,7 +160,7 @@ id of %telegramchat%
 </details>
 
 
-### Telegram Inline Button
+### Telegram Inline Keyboard
 ```
 %inlinekeyboard%
 inline keyboard
