@@ -243,19 +243,6 @@ This type represents a Callback Query. A callback query is what the bot receives
 event-callback query
 ```
 
-<details>
-	<summary>Remove Inline Keyboard of Message</summary>
-
-		```
-        on telegram message:
-            if inline keyboard of event-telegram message is set:
-                set {_mess} to event-telegram message
-                delete inline keyboard of {_mess}
-                edit telegram message event-telegram message to {_mess}
-		```
-
-</details>
-
 ## Events
 
 ### Telegram Message Event
