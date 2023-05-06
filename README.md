@@ -5,6 +5,8 @@ A Skript Addon that allows users to create fully functional Telegram Bots.
 
 # Documentation
 
+[![SkriptHubViewTheDocs](http://skripthub.net/static/addon/ViewTheDocsButton.png)](http://skripthub.net/docs/?addon=Skelegram)
+
 ## Effects
 
 ### Telegram Bot Login
