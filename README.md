@@ -78,7 +78,7 @@ To use it outside of a Telegram Event, specify the username of the bot. If a ses
 that bot, the message will be sent.
 
 <details>
-	<summary>Telegram Send Reply</summary>
+	<summary>Telegram Edit Message</summary>
 
 		```
             on telegram message:
