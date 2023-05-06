@@ -240,8 +240,7 @@ This type represents a Callback Query. A callback query is what the bot receives
 
 #### Usage
 ```
-1st row of keyboard %inlinekeyboard%
-inline keyboard of %telegrammessage%
+event-callback query
 ```
 
 <details>
