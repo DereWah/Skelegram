@@ -130,7 +130,7 @@ id of %telegramchat%
 
 		```
         on telegram message:
-            send "Received a message from a chat type %type of chat of event-telegram message%."
+            send "Received a message from a chat type %type of chat of event-telegram message%." to console
 		```
 
 </details>
@@ -146,7 +146,7 @@ This type represents a Telegram User.
 
 #### Usage
 ```
-id of %telegramchat%
+id of %telegramuser%
 ```
 
 <details>
