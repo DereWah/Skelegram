@@ -87,6 +87,25 @@ that bot, the message will be sent.
         ```
 </details>
 
+### Edit telegram message
+
+```
+edit telegram message %telegrammessage% to %telegrammessage/string%
+```
+
+Edit an existing, sent telegram message to a new one or to a string.
+
+<details>
+	<summary>Telegram Send Reply</summary>
+
+		```
+	on telegram message:
+		reply to telegram message event-telegram message with "Welcome!"
+		set {_mess} to last sent message
+		wait 5 seconds
+		edit telegram message {_mess} to "5 second have passed! Wow!"
+        ```
+</details>
 
 ## Types
 
