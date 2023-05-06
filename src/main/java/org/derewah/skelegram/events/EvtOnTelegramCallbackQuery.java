@@ -8,7 +8,6 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import org.bukkit.event.Event;
 import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateCallbackQuery;
-import org.derewah.skelegram.events.bukkit.BridgeTelegramUpdateMessage;
 import org.derewah.skelegram.telegram.TelegramBot;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -37,9 +36,9 @@ public class EvtOnTelegramCallbackQuery extends SkriptEvent {
                 return event.getUpdate().getCallbackQuery().getMessage();
             }
         }, EventValues.TIME_NOW);
-        EventValues.registerEventValue(BridgeTelegramUpdateMessage.class, TelegramBot.class, new Getter<TelegramBot, BridgeTelegramUpdateMessage>(){
+        EventValues.registerEventValue(BridgeTelegramUpdateCallbackQuery.class, TelegramBot.class, new Getter<TelegramBot, BridgeTelegramUpdateCallbackQuery>(){
             @Override
-            public TelegramBot get(BridgeTelegramUpdateMessage event){
+            public TelegramBot get(BridgeTelegramUpdateCallbackQuery event){
                 return event.getClient();
             }
         }, EventValues.TIME_NOW);
