@@ -105,7 +105,7 @@ You can either get this object in a telegram event (event-telegram message) or b
 
 		```
         on telegram message:
-            send "%id of sender of event-telegram message%" to sender of event-telegram message
+            send telegram message "%id of sender of event-telegram message%" to sender of event-telegram message
 		```
 
 </details>
