@@ -282,25 +282,6 @@ listen for any button press.
 
 ## Expressions
 
-### Event Telegram Message
-```
-[event-]telegram message
-```
-
-Returns a telegram message type from inside of a Telegram Message event.
-
-<details>
-	<summary>Telegram Message ID</summary>
-
-		```
-		on telegram message:
-            set {_mess} to event-telegram message
-            set {_id} to id of {_mess}
-            set {_chatid} to id of chat of event-telegram message
-            send telegram message "This message has ID %{_id}% in chat %{_chatid}%!" to sender of {_mess}
-		```
-</details>
-
 ### New Telegram Message
 ```
 new telegram message with text %string%
