@@ -230,6 +230,33 @@ url of %inlinebutton%
 
 </details>
 
+### Telegram Callback Query
+```
+%callbackquery%
+callback query
+```
+
+This type represents a Callback Query. A callback query is what the bot receives when an inline button is pressed. You can see for example the callback data of the button with `callback data of %callbackquery%`
+
+#### Usage
+```
+1st row of keyboard %inlinekeyboard%
+inline keyboard of %telegrammessage%
+```
+
+<details>
+	<summary>Remove Inline Keyboard of Message</summary>
+
+		```
+        on telegram message:
+            if inline keyboard of event-telegram message is set:
+                set {_mess} to event-telegram message
+                delete inline keyboard of {_mess}
+                edit telegram message event-telegram message to {_mess}
+		```
+
+</details>
+
 ## Events
 
 ### Telegram Message Event
@@ -376,6 +403,13 @@ callback data of %inlinebutton%
 
 The callback data of an Inline Button. This is the text that is sent to the bot on a button press, and it can be
 listened for with the On Callback Query event.
+
+### Callback Data of CallbackQuery
+```
+callback data of %callbackquery%
+```
+
+The callback data of a Callback Query. You can use this to check what telegram button was pressed, based on the callback data you had set.
 
 ### Text of InlineButton
 ```
