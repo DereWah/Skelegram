@@ -22,15 +22,15 @@ public class EffTelegramEditMessage extends AsyncEffect {
                 "edit telegram message %telegrammessage% to %telegrammessage/string% [with bot %-string%]");
     }
 
-    private Expression<Message> replyTo;
+    private Expression<Message> originalMessage;
     private Expression<Object> message;
-    private Expression<String> botName;
+    private Expression<String> exprBotUser;
     private boolean specifyBot = false;
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
-        replyTo = (Expression<Message>) expr[0];
+        originalMessage = (Expression<Message>) expr[0];
         message = (Expression<Object>) expr[1];
         specifyBot = parseResult.expr.contains(" with bot ");
         if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class, BridgeTelegramUpdateCallbackQuery.class) && !specifyBot){
@@ -38,44 +38,44 @@ public class EffTelegramEditMessage extends AsyncEffect {
             return false;
         }
         if (specifyBot){
-            botName = (Expression<String>) expr[2];
+            exprBotUser = (Expression<String>) expr[2];
         }
         return true;
     }
 
     @Override
     protected void execute(Event event){
-        if (message != null && replyTo != null && !message.getSingle(event).equals("")){
-            EditMessageText editMessage = null;
+        if (message != null && !message.getSingle(event).equals("") && originalMessage.getSingle(event) != null){
+            EditMessageText editMessage = new EditMessageText();
+            editMessage.setParseMode("MARKDOWN");
             if(message.getSingle(event) instanceof String) {
-                editMessage = new EditMessageText((String) message.getSingle(event));
+                editMessage.setText((String) message.getSingle(event));
             }else if (message.getSingle(event) instanceof Message){
                 Message mess = (Message) message.getSingle(event);
-                editMessage = new EditMessageText(mess.getText());
+                editMessage.setText(mess.getText());
                 editMessage.setEntities(mess.getEntities());
                 editMessage.setReplyMarkup(mess.getReplyMarkup());
             }
-            editMessage.setChatId(replyTo.getSingle(event).getChatId());
-            editMessage.setMessageId(replyTo.getSingle(event).getMessageId());
-            try {
-                if (!specifyBot){
-                    if (event instanceof BridgeTelegramUpdateMessage) {
-                        ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(editMessage);
-                    }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
-                        ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(editMessage);
-                    } else{
-                        Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
-                    }
-                }else {
-                    if (Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)) != null) {
-                        Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).executeAsync(editMessage);
-                    }else{
-                        Skript.error("Could not find a session with bot " + botName.getSingle(event) + ". Did you authenticate the bot?");
-                    }
+            editMessage.setChatId(originalMessage.getSingle(event).getChatId());
+            editMessage.setMessageId(originalMessage.getSingle(event).getMessageId());
 
+
+            String botUser = null;
+            if(specifyBot){
+                botUser = exprBotUser.getSingle(event);
+            }else if(event instanceof BridgeTelegramUpdateMessage){
+                botUser = ((BridgeTelegramUpdateMessage) event).getClient().getBotUsername();
+            }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
+                ((BridgeTelegramUpdateCallbackQuery) event).getClient().getBotUsername();
+            }
+            if (botUser != null) {
+                try {
+                    Skelegram.getInstance().getTelegramSessions().getBot(botUser).executeAsync(editMessage);
+                } catch (Exception e) {
+                    Skript.error("Error editing message: " + e.getMessage());
                 }
-            } catch (Exception e) {
-                Skript.error(e.toString());
+            } else {
+                Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");
             }
         } else{
             Skript.error("An empty message object can't be sent.");
@@ -84,7 +84,7 @@ public class EffTelegramEditMessage extends AsyncEffect {
     }
 
     public String toString(Event event, boolean debug) {
-        return "telegram reply " + message.toString(event, debug) + "to message " + replyTo.toString(event, debug);
+        return "telegram reply " + message.toString(event, debug) + "to message " + originalMessage.toString(event, debug);
     }
 
 }

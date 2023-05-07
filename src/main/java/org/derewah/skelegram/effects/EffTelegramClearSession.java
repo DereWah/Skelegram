@@ -17,27 +17,27 @@ public class EffTelegramClearSession extends AsyncEffect {
                 "(clear|stop) telegram session of bot %string%");
     }
 
-    private Expression<String> botName;
+    private Expression<String> exprBotUser;
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        botName = (Expression<String>) expr[0];
+        exprBotUser = (Expression<String>) expr[0];
         return true;
     }
 
     @Override
     protected void execute(Event event){
-        if(Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)) != null){
-            Skelegram.getInstance().getTelegramSessions().stopSession(botName.getSingle(event));
+        if(Skelegram.getInstance().getTelegramSessions().getBot(exprBotUser.getSingle(event)) != null){
+            Skelegram.getInstance().getTelegramSessions().stopSession(exprBotUser.getSingle(event));
         }else{
-            Skript.error("Could not find session "+ botName.getSingle(event)+". Did you authenticate the bot?");
+            Skript.error("Could not find session "+ exprBotUser.getSingle(event)+". Did you authenticate the bot?");
         }
 
     }
 
     public String toString(Event event, boolean debug) {
-        return "telegram clear session of bot "+ botName.toString(event, debug);
+        return "telegram clear session of bot "+ exprBotUser.toString(event, debug);
     }
 
 }

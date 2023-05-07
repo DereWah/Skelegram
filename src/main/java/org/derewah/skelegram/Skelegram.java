@@ -38,7 +38,11 @@ public class Skelegram extends JavaPlugin {
     }
 
     @Override
-    public void onDisable(){telegramSessions.clearAllSessions();}
+    public void onDisable(){
+        Bukkit.getLogger().info("Stopping all active Telegram bots. This may take up to 50 seconds, please wait...");
+        telegramSessions.clearAllSessions();
+        Bukkit.getLogger().info("Telegram bots stopped.");
+    }
     public static Skelegram getInstance(){
         return instance;
     }

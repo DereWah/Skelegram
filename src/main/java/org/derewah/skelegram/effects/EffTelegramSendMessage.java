@@ -26,23 +26,24 @@ public class EffTelegramSendMessage extends AsyncEffect {
                 "send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number% [with bot %-string%]");
     }
 
-    private Expression<Object> exprtarget;
+    private Expression<Object> exprTarget;
     private Expression<Object> message;
-    private Expression<String> username;
+    private Expression<String> exprBotUser;
+
     private boolean specifyBot = false;
 
     @Override
     @SuppressWarnings("unchecked")
     public boolean init(Expression<?>[] expr, int matchedPattern, Kleenean isDelayed, ParseResult parseResult) {
         message = (Expression<Object>) expr[0];
-        exprtarget = (Expression<Object>) expr[1];
+        exprTarget = (Expression<Object>) expr[1];
         specifyBot = parseResult.expr.contains(" with bot ");
         if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class, BridgeTelegramUpdateCallbackQuery.class) && !specifyBot){
             Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
             return false;
         }
         if (specifyBot){
-            username = (Expression<String>) expr[2];
+            exprBotUser = (Expression<String>) expr[2];
         }
         return true;
     }
@@ -52,12 +53,13 @@ public class EffTelegramSendMessage extends AsyncEffect {
         if (message.getSingle(event) != null){
 
             SendMessage sendMessage = new SendMessage();
-            if(exprtarget.getSingle(event) instanceof User){
-                sendMessage.setChatId(((User) exprtarget.getSingle(event)).getId());
-            }else if (exprtarget.getSingle(event) instanceof Chat){
-                sendMessage.setChatId(((Chat) exprtarget.getSingle(event)).getId());
-            }else if (exprtarget.getSingle(event) instanceof Number){
-                sendMessage.setChatId(((Number) exprtarget.getSingle(event)).longValue());
+            sendMessage.setParseMode("MARKDOWN");
+            if(exprTarget.getSingle(event) instanceof User){
+                sendMessage.setChatId(((User) exprTarget.getSingle(event)).getId());
+            }else if (exprTarget.getSingle(event) instanceof Chat){
+                sendMessage.setChatId(((Chat) exprTarget.getSingle(event)).getId());
+            }else if (exprTarget.getSingle(event) instanceof Number){
+                sendMessage.setChatId(((Number) exprTarget.getSingle(event)).longValue());
             }
             if(message.getSingle(event) instanceof String) {
                 sendMessage.setText((String) message.getSingle(event));
@@ -72,28 +74,24 @@ public class EffTelegramSendMessage extends AsyncEffect {
                 sendMessage.setEntities(mess.getEntities());
                 sendMessage.setReplyMarkup(mess.getReplyMarkup());
             }
-            try {
-                if (!specifyBot){
-                    if (event instanceof BridgeTelegramUpdateMessage) {
-                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(sendMessage);
-                        ((BridgeTelegramUpdateMessage) event).getClient().lastSent = sent.get();
-                    }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
-                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(sendMessage);
-                        ((BridgeTelegramUpdateMessage) event).getClient().lastSent = sent.get();
-                    } else{
-                        Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
-                    }
-                }else {
-                    if (Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)) != null) {
-                        CompletableFuture<Message> sent = Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).executeAsync(sendMessage);
-                        Skelegram.getInstance().getTelegramSessions().getBot(username.getSingle(event)).lastSent = sent.get();
-                    }else{
-                        Skript.error("Could not find a session with bot " + username.getSingle(event) + ". Did you authenticate the bot?");
-                    }
+            String botUser = null;
+            if (specifyBot) {
+                botUser = exprBotUser.getSingle(event);
+            } else if (event instanceof BridgeTelegramUpdateMessage) {
+                botUser = ((BridgeTelegramUpdateMessage) event).getClient().getBotUsername();
+            } else if (event instanceof BridgeTelegramUpdateCallbackQuery) {
+                botUser = ((BridgeTelegramUpdateCallbackQuery) event).getClient().getBotUsername();
+            }
 
+            if (botUser != null) {
+                try {
+                    CompletableFuture<Message> sent = Skelegram.getInstance().getTelegramSessions().getBot(botUser).executeAsync(sendMessage);
+                    Skelegram.getInstance().getTelegramSessions().getBot(botUser).lastSent = sent.get();
+                } catch (Exception e) {
+                    Skript.error("Error sending message: " + e.getMessage());
                 }
-            } catch (Exception e) {
-                Skript.error(e.toString());
+            } else {
+                Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");
             }
         } else{
             Skript.error("An empty message object can't be sent.");
@@ -102,7 +100,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
     }
 
     public String toString(Event event, boolean debug) {
-        return "telegram send message " + message.toString(event, debug) + " to user " + exprtarget.toString(event, debug);
+        return "telegram send message " + message.toString(event, debug) + " to user " + exprTarget.toString(event, debug);
     }
 
 }

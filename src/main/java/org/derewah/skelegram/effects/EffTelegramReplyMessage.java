@@ -27,7 +27,7 @@ public class EffTelegramReplyMessage extends AsyncEffect {
 
     private Expression<Message> replyTo;
     private Expression<Object> message;
-    private Expression<String> botName;
+    private Expression<String> exprBotUser;
     private boolean specifyBot = false;
 
     @Override
@@ -41,7 +41,7 @@ public class EffTelegramReplyMessage extends AsyncEffect {
             return false;
         }
         if (specifyBot){
-            botName = (Expression<String>) expr[2];
+            exprBotUser = (Expression<String>) expr[2];
         }
         return true;
     }
@@ -49,39 +49,40 @@ public class EffTelegramReplyMessage extends AsyncEffect {
     @Override
     protected void execute(Event event){
         if (message != null && replyTo != null && !message.getSingle(event).equals("")){
-            SendMessage replyMessage = null;
+            SendMessage replyMessage = new SendMessage();
+            replyMessage.setParseMode("MARKDOWN");
             if(message.getSingle(event) instanceof String) {
-                replyMessage = new SendMessage(replyTo.getSingle(event).getChatId().toString(), (String) message.getSingle(event));
+                replyMessage.setText((String) message.getSingle(event));
+                replyMessage.setChatId(replyTo.getSingle(event).getChatId().toString());
             }else if (message.getSingle(event) instanceof Message){
                 Message mess = (Message) message.getSingle(event);
-                replyMessage = new SendMessage(replyTo.getSingle(event).getChatId().toString(), mess.getText());
+                replyMessage.setChatId(replyTo.getSingle(event).getChatId().toString());
+                replyMessage.setText(mess.getText());
                 replyMessage.setMessageThreadId(mess.getMessageThreadId());
                 replyMessage.setEntities(mess.getEntities());
                 replyMessage.setReplyMarkup(mess.getReplyMarkup());
             }
             replyMessage.setReplyToMessageId(replyTo.getSingle(event).getMessageId());
-            try {
-                if (!specifyBot){
-                    if (event instanceof BridgeTelegramUpdateMessage) {
-                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateMessage) event).getClient().executeAsync(replyMessage);
-                        ((BridgeTelegramUpdateMessage) event).getClient().lastSent = sent.get();
-                    }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
-                        CompletableFuture<Message> sent = ((BridgeTelegramUpdateCallbackQuery) event).getClient().executeAsync(replyMessage);
-                        ((BridgeTelegramUpdateCallbackQuery) event).getClient().lastSent = sent.get();
-                    } else{
-                        Skript.error("You're using the Send Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
-                    }
-                }else {
-                    if (Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)) != null) {
-                        CompletableFuture<Message> sent = Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).executeAsync(replyMessage);
-                        Skelegram.getInstance().getTelegramSessions().getBot(botName.getSingle(event)).lastSent = sent.get();
-                    }else{
-                        Skript.error("Could not find a session with bot " + botName.getSingle(event) + ". Did you authenticate the bot?");
-                    }
 
+
+            String botUser = null;
+            if (specifyBot) {
+                botUser = exprBotUser.getSingle(event);
+            } else if (event instanceof BridgeTelegramUpdateMessage) {
+                botUser = ((BridgeTelegramUpdateMessage) event).getClient().getBotUsername();
+            } else if (event instanceof BridgeTelegramUpdateCallbackQuery) {
+                botUser = ((BridgeTelegramUpdateCallbackQuery) event).getClient().getBotUsername();
+            }
+
+            if (botUser != null) {
+                try {
+                    CompletableFuture<Message> sent = Skelegram.getInstance().getTelegramSessions().getBot(botUser).executeAsync(replyMessage);
+                    Skelegram.getInstance().getTelegramSessions().getBot(botUser).lastSent = sent.get();
+                } catch (Exception e) {
+                    Skript.error("Error sending message: " + e.getMessage());
                 }
-            } catch (Exception e) {
-                Skript.error(e.toString());
+            } else {
+                Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");
             }
         } else{
             Skript.error("An empty message object can't be sent.");

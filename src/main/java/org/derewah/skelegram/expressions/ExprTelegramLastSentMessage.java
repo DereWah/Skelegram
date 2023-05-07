@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class ExprTelegramLastSentMessage extends SimpleExpression<Message> {
 
     static {
-        Skript.registerExpression(ExprTelegramLastSentMessage.class, Message.class, ExpressionType.SIMPLE, "[the] last sent message [with bot %-string%]");
+        Skript.registerExpression(ExprTelegramLastSentMessage.class, Message.class, ExpressionType.SIMPLE, "[the] last sent [telegram] message [with bot %-string%]");
     }
 
     private Expression<String> exprBot;
