@@ -1,4 +1,4 @@
-
+ 
 # Skelegram
 
 A Skript Addon that allows users to create fully functional Telegram Bots.
@@ -65,7 +65,26 @@ that bot, the message will be sent.
         ```
 </details>
 
-### Reply telegram message
+### Delete telegram Message
+```
+delete telegram message %telegrammessage% [with bot %string%]
+```
+
+Delete a telegram message sent by the bot. If in a private chat, it can also delete messages from the other user.
+
+<details>
+	<summary>Telegram Delete Message</summary>
+
+		```
+            on telegram message:
+                send telegram message "This message will autodelete!" to event-telegram user
+                set {_last} to last sent telegram message
+                wait 5 seconds
+                delete telegram message {_last}
+        ```
+</details>
+
+### Reply to telegram message
 
 ```
 reply to telegram message %telegrammessage% with %telegrammessage/string% [with bot %-string%]
@@ -78,7 +97,7 @@ To use it outside of a Telegram Event, specify the username of the bot. If a ses
 that bot, the message will be sent.
 
 <details>
-	<summary>Telegram Edit Message</summary>
+	<summary>Telegram Reply to Message</summary>
 
 		```
             on telegram message:
@@ -90,13 +109,13 @@ that bot, the message will be sent.
 ### Edit telegram message
 
 ```
-edit telegram message %telegrammessage% to %telegrammessage/string%
+edit telegram message %telegrammessage% to %telegrammessage/string% [with bot %string%]
 ```
 
 Edit an existing, sent telegram message to a new one or to a string.
 
 <details>
-	<summary>Telegram Send Reply</summary>
+	<summary>Telegram Edit Message</summary>
 
 		```
 	on telegram message:
@@ -104,6 +123,68 @@ Edit an existing, sent telegram message to a new one or to a string.
 		set {_mess} to last sent message
 		wait 5 seconds
 		edit telegram message {_mess} to "5 second have passed! Wow!"
+        ```
+</details>
+
+### Copy telegram message
+
+```
+copy telegram message %telegrammessage% to %telegramuser/telegramchat/number% [with bot %string%]
+```
+
+Copy an existing telegram message, and send it to a user. This is useful for storing messages sent by the bot, eg. media
+or other. A copied message will not have "forwarded from" to its top.
+
+<details>
+	<summary>Telegram Anonymous Report System</summary>
+
+		```
+	on telegram message:
+		if text of event-telegram message contains "/report":
+            reply to telegram message event-telegram message with "This message has been forwarded anonymously to the admins."
+            copy telegram message event-telegram message to {@numeric_admin_id}
+        ```
+</details>
+
+### Forward telegram message
+
+```
+forward telegram message %telegrammessage% to %telegramuser/telegramchat/number% [with bot %string%]
+```
+
+Forward an existing telegram message, and send it to a user. The final message will have information about who sent it in
+the first place. It will show "forwarded from" to its top.
+
+<details>
+	<summary>Telegram Report System</summary>
+
+		```
+	on telegram message:
+		if text of event-telegram message contains "/report":
+            reply to telegram message event-telegram message with "This message has been forwarded to the admins."
+            forward telegram message event-telegram message to {@numeric_admin_id}
+        ```
+</details>
+
+### Forward telegram message
+
+```
+answer to callback query %callbackquery% with %string% [with popup]
+```
+
+Show a little notification to a user after they pressed a button. This will also complete a button press, removing the
+little clock that shows on the button when it gets pressed. Adding "with popup" will show the callback query answer in
+a popup window, and the user will have to press OK to hide it.
+
+<details>
+	<summary>Telegram Secret Code</summary>
+
+		```
+        on callback query with data "secret_code":
+            delete telegram message message of event-callback query
+            set {_code} to a random integer between 1000 and 9999
+            answer to callback query event-callback query with "Your secret code is %nl%%{_code}%!" with popup
+            
         ```
 </details>
 
@@ -433,6 +514,28 @@ sender of %telegrammessage%
 ```
 
 The sender of a Telegram Message.
+
+### Telegram Username of User / Chat / Bot
+```
+username of %telegramuser/telegramchat/telegrambot%
+```
+
+The username (mention) of a telegram user, a chat, or a bot. The username is returned without the @. If no username is
+set, null is returned.
+
+### Telegram Full Name of User / Chat
+```
+full name of %telegramuser/telegramchat%
+```
+
+The full name of a Telegram User or, if a Chat, the title of the chat.
+
+### Telegram Language Code of User
+```
+language [code] of %telegramuser%
+```
+
+The language code (IT, EN, FR ... ) of a telegram user, as set in the settings by them.
 
 ## FAQ
 

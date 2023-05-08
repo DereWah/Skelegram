@@ -1,4 +1,5 @@
 org\derewah\skelegram\expressions\ExprTelegramId.class
+org\derewah\skelegram\expressions\ExprTelegramUsername.class
 org\derewah\skelegram\expressions\ExprTelegramText.class
 org\derewah\skelegram\expressions\ExprTelegramText$1.class
 org\derewah\skelegram\effects\EffTelegramEditMessage.class
@@ -39,6 +40,7 @@ org\derewah\skelegram\expressions\ExprTelegramNewMessage.class
 org\derewah\skelegram\Types$6.class
 org\derewah\skelegram\events\bukkit\BridgeTelegramUpdateCallbackQuery.class
 org\derewah\skelegram\expressions\ExprTelegramInlineButtonUrl.class
+org\derewah\skelegram\expressions\ExprTelegramLanguage.class
 org\derewah\skelegram\expressions\ExprTelegramNewInlineKeyboard.class
 org\derewah\skelegram\effects\EffTelegramDeleteMessage.class
 org\derewah\skelegram\events\EvtOnTelegramCallbackQuery$4.class
@@ -46,5 +48,6 @@ org\derewah\skelegram\Skelegram.class
 org\derewah\skelegram\effects\EffTelegramReplyMessage.class
 org\derewah\skelegram\expressions\ExprTelegramChatType.class
 org\derewah\skelegram\Types$3.class
+org\derewah\skelegram\expressions\ExprTelegramFullName.class
 org\derewah\skelegram\effects\EffTelegramBotLogin.class
 org\derewah\skelegram\effects\EffTelegramClearSession.class
