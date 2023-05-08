@@ -47,7 +47,7 @@ Please note that closing a session may take up to 50 seconds, as it is delayed b
 ### Send telegram message
 
 ```
-send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number% [with bot %string%]
+send telegram message %string/telegrammessage% [with markdown] to %telegramuser/telegramchat/number% [with bot %string%]
 ```
 
 Send a telegram message. The message can be a string or can be an existing message.
@@ -87,8 +87,7 @@ Delete a telegram message sent by the bot. If in a private chat, it can also del
 ### Reply to telegram message
 
 ```
-reply to telegram message %telegrammessage% with %telegrammessage/string% [with bot %-string%]
-telegram reply to %telegrammessage% with %telegrammessage/string% [with bot %-string%]
+reply to telegram message %telegrammessage% with %telegrammessage/string% [with markdown] [with bot %-string%]
 ```
 
 Send a telegram message, as a reply to another message. The reply message can be a string or can be an existing message.
@@ -109,7 +108,7 @@ that bot, the message will be sent.
 ### Edit telegram message
 
 ```
-edit telegram message %telegrammessage% to %telegrammessage/string% [with bot %string%]
+edit telegram message %telegrammessage% to %telegrammessage/string% [with markdown] [with bot %string%]
 ```
 
 Edit an existing, sent telegram message to a new one or to a string.
