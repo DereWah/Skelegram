@@ -53,7 +53,7 @@ public class EffTelegramDeleteMessage extends AsyncEffect {
             }else if(event instanceof BridgeTelegramUpdateMessage){
                 botUser = ((BridgeTelegramUpdateMessage) event).getClient().getBotUsername();
             }else if(event instanceof BridgeTelegramUpdateCallbackQuery){
-                ((BridgeTelegramUpdateCallbackQuery) event).getClient().getBotUsername();
+                botUser = ((BridgeTelegramUpdateCallbackQuery) event).getClient().getBotUsername();
             }
             if (botUser != null) {
                 try {
