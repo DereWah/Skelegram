@@ -166,7 +166,7 @@ the first place. It will show "forwarded from" to its top.
         ```
 </details>
 
-### Forward telegram message
+### Answer to callback query
 
 ```
 answer to callback query %callbackquery% with %string% [with popup]
