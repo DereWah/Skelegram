@@ -80,6 +80,7 @@ public class EffTelegramCopyMessage extends AsyncEffect {
                     CompletableFuture<MessageId> sent = Skelegram.getInstance().getTelegramSessions().getBot(botUser).executeAsync(copyMessage);
                 } catch (Exception e) {
                     Skript.error("Error copying message: " + e.getMessage());
+                    Skript.error(e.toString());
                 }
             } else {
                 Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");

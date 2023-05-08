@@ -61,6 +61,7 @@ public class EffTelegramAnswerCallbackQuery extends AsyncEffect {
                     Skelegram.getInstance().getTelegramSessions().getBot(botUser).executeAsync(answerCallbackQuery);
                 } catch (Exception e) {
                     Skript.error("Error answering callback query: " + e.getMessage());
+                    Skript.error(e.toString());
                 }
             } else {
                 Skript.error("Could not find the bot to use.");

@@ -19,13 +19,15 @@ public class EffTelegramEditMessage extends AsyncEffect {
 
     static  {
         registerEffect(EffTelegramEditMessage.class,
-                "edit telegram message %telegrammessage% to %telegrammessage/string% [with bot %-string%]");
+                "edit telegram message %telegrammessage% to %telegrammessage/string% [with bot %-string%]",
+                "edit telegram message %telegrammessage% to %telegrammessage/string% with markdown [with bot %-string%]");
     }
 
     private Expression<Message> originalMessage;
     private Expression<Object> message;
     private Expression<String> exprBotUser;
     private boolean specifyBot = false;
+    private boolean markdown = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -33,6 +35,7 @@ public class EffTelegramEditMessage extends AsyncEffect {
         originalMessage = (Expression<Message>) expr[0];
         message = (Expression<Object>) expr[1];
         specifyBot = parseResult.expr.contains(" with bot ");
+        markdown = matchedPattern == 1;
         if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class, BridgeTelegramUpdateCallbackQuery.class) && !specifyBot){
             Skript.error("You're using the Edit Telegram Message effect outside of a Telegram event. Specify the username of the bot you are editing a message from to use this effect here.");
             return false;
@@ -47,7 +50,9 @@ public class EffTelegramEditMessage extends AsyncEffect {
     protected void execute(Event event){
         if (message != null && !message.getSingle(event).equals("") && originalMessage.getSingle(event) != null){
             EditMessageText editMessage = new EditMessageText();
-            editMessage.setParseMode("MARKDOWN");
+            if(markdown) {
+                editMessage.setParseMode("MARKDOWN");
+            }
             if(message.getSingle(event) instanceof String) {
                 editMessage.setText((String) message.getSingle(event));
             }else if (message.getSingle(event) instanceof Message){
@@ -73,6 +78,7 @@ public class EffTelegramEditMessage extends AsyncEffect {
                     Skelegram.getInstance().getTelegramSessions().getBot(botUser).executeAsync(editMessage);
                 } catch (Exception e) {
                     Skript.error("Error editing message: " + e.getMessage());
+                    Skript.error(e.toString());
                 }
             } else {
                 Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");

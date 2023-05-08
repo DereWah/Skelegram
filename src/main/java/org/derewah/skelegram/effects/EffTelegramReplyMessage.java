@@ -22,13 +22,14 @@ public class EffTelegramReplyMessage extends AsyncEffect {
     static  {
         registerEffect(EffTelegramReplyMessage.class,
                 "reply to telegram message %telegrammessage% with %telegrammessage/string% [with bot %-string%]",
-                "telegram reply to %telegrammessage% with %telegrammessage/string% [with bot %-string%]");
+                "reply to telegram message %telegrammessage% with %telegrammessage/string% with markdown [with bot %-string%]");
     }
 
     private Expression<Message> replyTo;
     private Expression<Object> message;
     private Expression<String> exprBotUser;
     private boolean specifyBot = false;
+    private boolean markdown = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -36,6 +37,7 @@ public class EffTelegramReplyMessage extends AsyncEffect {
         replyTo = (Expression<Message>) expr[0];
         message = (Expression<Object>) expr[1];
         specifyBot = parseResult.expr.contains(" with bot ");
+        markdown = matchedPattern == 1;
         if(!ParserInstance.get().isCurrentEvent(BridgeTelegramUpdateMessage.class, BridgeTelegramUpdateCallbackQuery.class) && !specifyBot){
             Skript.error("You're using the Reply Telegram Message effect outside of a Telegram event. Specify the username of the bot you are sending a message from to use this effect here.");
             return false;
@@ -50,7 +52,9 @@ public class EffTelegramReplyMessage extends AsyncEffect {
     protected void execute(Event event){
         if (message != null && replyTo != null && !message.getSingle(event).equals("")){
             SendMessage replyMessage = new SendMessage();
-            replyMessage.setParseMode("MARKDOWN");
+            if(markdown) {
+                replyMessage.setParseMode("MARKDOWN");
+            }
             if(message.getSingle(event) instanceof String) {
                 replyMessage.setText((String) message.getSingle(event));
                 replyMessage.setChatId(replyTo.getSingle(event).getChatId().toString());
@@ -80,6 +84,7 @@ public class EffTelegramReplyMessage extends AsyncEffect {
                     Skelegram.getInstance().getTelegramSessions().getBot(botUser).lastSent = sent.get();
                 } catch (Exception e) {
                     Skript.error("Error sending message: " + e.getMessage());
+                    Skript.error(e.toString());
                 }
             } else {
                 Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");

@@ -67,7 +67,8 @@ public class ExprTelegramInlineKeyboardRow extends SimpleExpression<InlineKeyboa
         if((delta == null  && mode != Changer.ChangeMode.RESET && mode != Changer.ChangeMode.DELETE) || (delta.length == 0)){
             return;
         }
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>(List.copyOf(kb.getSingle(event).getKeyboard()));
+
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>(kb.getSingle(event).getKeyboard());
         Integer n = rowNumber != null ? rowNumber.getSingle(event).intValue()-1 : null;
         assert n != null;
         if(n < 0){
@@ -86,7 +87,7 @@ public class ExprTelegramInlineKeyboardRow extends SimpleExpression<InlineKeyboa
                         break;
                     }
                 case ADD:
-                    row = new ArrayList<>(List.copyOf(keyboard.get(n)));
+                    row = new ArrayList<>((keyboard.get(n)));
                     row.addAll(deltaLine);
                     keyboard.set(n, row);
                     break;
@@ -95,7 +96,7 @@ public class ExprTelegramInlineKeyboardRow extends SimpleExpression<InlineKeyboa
                     keyboard.set(n, null);
                     break;
                 case REMOVE:
-                    row = new ArrayList<>(List.copyOf(keyboard.get(n)));
+                    row = new ArrayList<>(keyboard.get(n));
                     row.removeAll(deltaLine);
                     keyboard.set(n, row);
                     break;

@@ -23,7 +23,8 @@ public class EffTelegramSendMessage extends AsyncEffect {
 
     static  {
         registerEffect(EffTelegramSendMessage.class,
-                "send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number% [with bot %-string%]");
+                "send telegram message %string/telegrammessage% to %telegramuser/telegramchat/number% [with bot %-string%]",
+                "send telegram message %string/telegrammessage% with markdown to %telegramuser/telegramchat/number% [with bot %-string%]");
     }
 
     private Expression<Object> exprTarget;
@@ -31,6 +32,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
     private Expression<String> exprBotUser;
 
     private boolean specifyBot = false;
+    private boolean markdown = false;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -45,6 +47,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
         if (specifyBot){
             exprBotUser = (Expression<String>) expr[2];
         }
+        markdown = matchedPattern == 1;
         return true;
     }
 
@@ -53,7 +56,9 @@ public class EffTelegramSendMessage extends AsyncEffect {
         if (message.getSingle(event) != null){
 
             SendMessage sendMessage = new SendMessage();
-            sendMessage.setParseMode("MARKDOWN");
+            if(markdown) {
+                sendMessage.setParseMode("MARKDOWN");
+            }
             if(exprTarget.getSingle(event) instanceof User){
                 sendMessage.setChatId(((User) exprTarget.getSingle(event)).getId());
             }else if (exprTarget.getSingle(event) instanceof Chat){
@@ -89,6 +94,7 @@ public class EffTelegramSendMessage extends AsyncEffect {
                     Skelegram.getInstance().getTelegramSessions().getBot(botUser).lastSent = sent.get();
                 } catch (Exception e) {
                     Skript.error("Error sending message: " + e.getMessage());
+                    Skript.error(e.toString());
                 }
             } else {
                 Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");

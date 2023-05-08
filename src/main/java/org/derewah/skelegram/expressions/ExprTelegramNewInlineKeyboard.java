@@ -10,6 +10,8 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+
+import java.util.Arrays;
 import java.util.List;
 
 public class ExprTelegramNewInlineKeyboard extends SimpleExpression<InlineKeyboardMarkup> {
@@ -32,7 +34,7 @@ public class ExprTelegramNewInlineKeyboard extends SimpleExpression<InlineKeyboa
     @Override
     protected InlineKeyboardMarkup[] get(Event event) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> matrix = List.of(List.of(exprRow.getAll(event)));
+        List<List<InlineKeyboardButton>> matrix = Arrays.asList(Arrays.asList(exprRow.getAll(event)));
         keyboard.setKeyboard(matrix);
         return new InlineKeyboardMarkup[]{keyboard};
     }

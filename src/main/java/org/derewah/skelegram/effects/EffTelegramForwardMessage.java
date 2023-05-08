@@ -82,6 +82,7 @@ public class EffTelegramForwardMessage extends AsyncEffect {
                     Skelegram.getInstance().getTelegramSessions().getBot(botUser).lastSent = sent.get();
                 } catch (Exception e) {
                     Skript.error("Error forwarding message: " + e.getMessage());
+                    Skript.error(e.toString());
                 }
             } else {
                 Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");

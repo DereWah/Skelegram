@@ -60,6 +60,7 @@ public class EffTelegramDeleteMessage extends AsyncEffect {
                     Skelegram.getInstance().getTelegramSessions().getBot(botUser).executeAsync(deleteMessage);
                 } catch (Exception e) {
                     Skript.error("Error deleting message: " + e.getMessage());
+                    Skript.error(e.toString());
                 }
             } else {
                 Skript.error("Could not find the bot to use. If outside of a telegram event, did you specify the username of the bot?");
