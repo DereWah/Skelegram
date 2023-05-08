@@ -61,7 +61,8 @@ that bot, the message will be sent.
 		```
             on telegram message:
                 set {_mess} to event-telegram message #save received message in a variable
-                send telegram message {_mess} to event-telegramuser #echo their message
+                send telegram message {_mess} to event-telegram user #echo their message
+                send telegram message "*bold*" with markdown to event-telegram user #send message with markdown
         ```
 </details>
 
