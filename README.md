@@ -343,6 +343,22 @@ This type represents a Callback Query. A callback query is what the bot receives
 event-callback query
 ```
 
+### Telegram Bot
+```
+%telegram bot%
+telegram bot
+```
+
+This type represents a telegram bot. It holds information about the bot that fired a spefific event.
+You can view its username (to check if the bot is the one you're creating in skript) with "%username of event-telegram bot%" or with "%event-telegram bot%"
+Since Telegram Events are fired by all bots ran on a server, you should always filter that the received event is fired by
+the bot you're programming.
+
+#### Usage
+```
+event-telegram bot
+```
+
 ## Events
 
 ### Telegram Message Event
