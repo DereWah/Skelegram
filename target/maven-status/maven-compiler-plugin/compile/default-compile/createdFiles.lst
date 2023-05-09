@@ -23,6 +23,7 @@ org\derewah\skelegram\expressions\ExprTelegramMessageInlineKeyboard$1.class
 org\derewah\skelegram\Types.class
 org\derewah\skelegram\Types$1.class
 org\derewah\skelegram\expressions\ExprTelegramNewInlineButton.class
+org\derewah\skelegram\expressions\ExprTelegramMessageInReplyTo.class
 org\derewah\skelegram\expressions\ExprTelegramCallbackData$1.class
 org\derewah\skelegram\Types$5.class
 org\derewah\skelegram\events\EvtOnTelegramCallbackQuery$2.class

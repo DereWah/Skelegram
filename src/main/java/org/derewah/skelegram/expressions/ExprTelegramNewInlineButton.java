@@ -14,34 +14,32 @@ public class ExprTelegramNewInlineButton extends SimpleExpression<InlineKeyboard
 
     static {
         Skript.registerExpression(ExprTelegramNewInlineButton.class, InlineKeyboardButton.class, ExpressionType.COMBINED,
-                "[a] [new] [telegram] inline [keyboard] button",
+                "[a] [new] [telegram] inline [keyboard] button with text %string%",
                 "[a] [new] [telegram] inline [keyboard] button with text %string% with url %string%",
-                "[a] [new] [telegram] inline [keyboard] button with text %string% with callback data %string%");
+                "[a] [new] [telegram] inline [keyboard] button with text %string% with callback data %string%",
+                "[a] [new] [telegram] inline [keyboard] button with text %string% with switch inline %string%",
+                "[a] [new] [telegram] inline [keyboard] button with text %string% with switch inline current chat %string%");
     }
 
     private Expression<String> text;
     private Expression<String> url;
     private Expression<String> data;
+    private Expression<String> switchInline;
+    private Expression<String> switchInlineCurrentChat;
 
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean delayed, ParseResult parseResult) {
-        if (expressions.length == 0){
-            return true;
+        text = (Expression<String>) expressions[0];
+        if(matchedPattern == 1){
+            url = (Expression<String>) expressions[1];
+        }else if(matchedPattern == 2){
+            data = (Expression<String>) expressions[1];
+        } else if(matchedPattern == 3){
+            switchInline = (Expression<String>) expressions[1];
+        } else if(matchedPattern == 4){
+            switchInlineCurrentChat = (Expression<String>) expressions[1];
         }
-        if (expressions.length == 1){
-            Skript.error("Specify both the content of the button and its callback data/url");
-            return false;
-        }
-        if (expressions.length == 2){
-            text = (Expression<String>) expressions[0];
-            if(matchedPattern == 1){
-                url = (Expression<String>) expressions[1];
-            }else if(matchedPattern == 2){
-                data = (Expression<String>) expressions[1];
-            }
-            return true;
-        }
-        return false;
+        return true;
     }
 
     @Override
@@ -52,8 +50,14 @@ public class ExprTelegramNewInlineButton extends SimpleExpression<InlineKeyboard
         }
         if(url != null){
             button.setUrl(url.getSingle(event));
-        }else if(data != null){
+        }else if(data != null) {
             button.setCallbackData(data.getSingle(event));
+        }else if(switchInline != null) {
+            button.setSwitchInlineQuery(switchInline.getSingle(event));
+        }else if(switchInlineCurrentChat != null){
+            button.setSwitchInlineQueryCurrentChat(switchInlineCurrentChat.getSingle(event));
+        }else{
+            button.setCallbackData("Skelegram");
         }
         return new InlineKeyboardButton[]{button};
     }

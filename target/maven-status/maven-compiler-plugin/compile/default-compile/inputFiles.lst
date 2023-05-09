@@ -1,3 +1,4 @@
+C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\expressions\ExprTelegramInlineButtonSwitchInline.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\events\EvtOnTelegramCallbackQuery.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\events\EvtOnTelegramMessage.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\effects\EffTelegramDeleteMessage.java
@@ -10,6 +11,8 @@ C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\telegra
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\expressions\ExprTelegramNewMessage.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\Commands.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\expressions\ExprTelegramText.java
+C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\expressions\ExprTelegramInlineButtonSwitchInlineCurrentChat.java
+C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\expressions\ExprTelegramMessageInReplyTo.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\effects\EffTelegramReplyMessage.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\expressions\ExprTelegramInlineKeyboardRow.java
 C:\Users\User\IdeaProjects\Skelegram\src\main\java\org\derewah\skelegram\effects\EffTelegramForwardMessage.java
