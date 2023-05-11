@@ -553,6 +553,13 @@ language [code] of %telegramuser%
 
 The language code (IT, EN, FR ... ) of a telegram user, as set in the settings by them.
 
+### Telegram Replied Message
+```
+replied message of %telegrammessage%
+```
+
+Returns a Message object containing another message, the one that the original was in reply to. Cannot be set (to send messages as a reply, use the proper effect)
+
 ## FAQ
 
 #### How to get a Bot Token?
