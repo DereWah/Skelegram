@@ -3,6 +3,10 @@
 
 A Skript Addon that allows users to create fully functional Telegram Bots.
 
+# Tutorial
+
+An in-depth tutorial written by me can be found on SkriptHub: https://skripthub.net/tutorials/76. Follow the tutorial to understand the basics of creating a telegram bot.
+
 # Documentation
 
 [![SkriptHubViewTheDocs](http://skripthub.net/static/addon/ViewTheDocsButton.png)](http://skripthub.net/docs/?addon=Skelegram)
