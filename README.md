@@ -1,5 +1,5 @@
  
-# Skelegram
+# Skelegram ![Downloads](https://img.shields.io/github/downloads/DereWah/Skelegram/total)
 
 A Skript Addon that allows users to create fully functional Telegram Bots.
 
